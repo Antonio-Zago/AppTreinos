@@ -2,4 +2,4 @@
  Aplicativo mobile para acompanhamento de treinos na academia e compartilhamento do desempenho e rotina de treino com grupos online
 
  ## Padrão de commits:
- GS - Mensagem do commit
+ GS-Numero task - Mensagem do commit
