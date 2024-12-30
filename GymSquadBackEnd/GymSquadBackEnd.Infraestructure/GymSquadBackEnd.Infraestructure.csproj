@@ -10,4 +10,9 @@
     <ProjectReference Include="..\GymSquadBackEnd.Domain\GymSquadBackEnd.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Context\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

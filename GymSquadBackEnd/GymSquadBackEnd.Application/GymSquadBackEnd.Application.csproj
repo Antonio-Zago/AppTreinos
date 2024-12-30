@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <Folder Include="Dtos\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
