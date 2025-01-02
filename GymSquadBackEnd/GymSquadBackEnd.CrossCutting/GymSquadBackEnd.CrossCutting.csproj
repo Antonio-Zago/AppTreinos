@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GymSquadBackEnd.Application\GymSquadBackEnd.Application.csproj" />
-    <ProjectReference Include="..\GymSquadBackEnd.Domain\GymSquadBackEnd.Domain.csproj" />
-    <ProjectReference Include="..\GymSquadBackEnd.Infraestructure\GymSquadBackEnd.Infraestructure.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Ioc\" />
+    <ProjectReference Include="..\GymSquadBackEnd.Application\GymSquadBackEnd.Application.csproj" />
+    <ProjectReference Include="..\GymSquadBackEnd.Domain\GymSquadBackEnd.Domain.csproj" />
+    <ProjectReference Include="..\GymSquadBackEnd.Infraestructure\GymSquadBackEnd.Infraestructure.csproj" />
   </ItemGroup>
 
 </Project>

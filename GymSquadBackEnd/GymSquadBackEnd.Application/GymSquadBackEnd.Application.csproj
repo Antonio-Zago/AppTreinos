@@ -7,14 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GymSquadBackEnd.Domain\GymSquadBackEnd.Domain.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Mappings\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\GymSquadBackEnd.Domain\GymSquadBackEnd.Domain.csproj" />
   </ItemGroup>
 
 </Project>
