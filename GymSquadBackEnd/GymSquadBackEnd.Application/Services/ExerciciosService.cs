@@ -27,7 +27,7 @@ namespace GymSquadBackEnd.Application.Services
 
         public void Post(ExercicioForm form)
         {
-            var exercicio = ExerciciosMapping.DtoToEntity(form);
+            var exercicio = ExercicioMapper.DtoToEntity(form);
 
             _exerciciosRepository.Post(exercicio);
         }

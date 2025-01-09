@@ -31,7 +31,9 @@ namespace GymSquadBackEnd.Infraestructure.Context
 
         public DbSet<Usuario>? Usuarios { get; set; }
 
-        public DbSet<UsuarioTreino>? Usuarios_Treinos { get; set; }
+        public DbSet<UsuarioTreino> Usuarios_Treinos { get; set; }
+
+        public DbSet<Serie> Series { get; set; }
 
     }
 }

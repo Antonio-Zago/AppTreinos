@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymSquadBackEnd.Domain.Entities
+namespace GymSquadBackEnd.Application.Dtos
 {
-    public class Exercicio
+    public class TreinoExercicioDto
     {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(80)]
         public string Nome { get; set; }
 
-        public byte[]? Foto { get; set; }
+        public byte[] Foto { get; set; }
+
+        public List<SerieDto> Series { get; set; }
     }
 }

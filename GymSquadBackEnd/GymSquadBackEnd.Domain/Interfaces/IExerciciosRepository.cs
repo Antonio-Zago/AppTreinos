@@ -12,5 +12,9 @@ namespace GymSquadBackEnd.Domain.Interfaces
         public List<Exercicio> GetAll();
 
         public void Post(Exercicio exercicio);
+
+        public Exercicio GetById(int id);
+
+        public Exercicio Update(Exercicio exercicio);
     }
 }

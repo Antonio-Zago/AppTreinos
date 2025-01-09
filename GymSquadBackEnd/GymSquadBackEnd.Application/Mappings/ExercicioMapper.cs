@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GymSquadBackEnd.Application.Mappings
 {
-    public static class ExerciciosMapping
+    public static class ExercicioMapper
     {
         public static Exercicio DtoToEntity(ExercicioForm form)
         {

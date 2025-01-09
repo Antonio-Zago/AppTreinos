@@ -1,0 +1,226 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
+  <diagram name="Página-1" id="zUiYHEWIexiEg4oFH4Rs">
+    <mxGraphModel dx="1173" dy="709" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="170" width="230" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-2" value="Front end" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="140" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="170" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-4" value="Banco de dados móvel" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="140" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-5" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="380" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-6" value="Banco de dados l" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="340" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-7" value="Usuário cria novo treino, somente nome" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="190" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-8" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.14;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="NXEukAKlA3xqkjOK2SxF-7" target="NXEukAKlA3xqkjOK2SxF-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="320" as="sourcePoint" />
+            <mxPoint x="570" y="270" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-9" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="NXEukAKlA3xqkjOK2SxF-7" target="NXEukAKlA3xqkjOK2SxF-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="362" y="341" as="sourcePoint" />
+            <mxPoint x="580" y="320" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-11" value="Usuário insere exercicios nesse treino" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="260" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-13" value="Cenário com internet em todas as etapas" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="70" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-14" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.14;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="270" as="sourcePoint" />
+            <mxPoint x="578" y="249" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-15" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" target="NXEukAKlA3xqkjOK2SxF-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="290" as="sourcePoint" />
+            <mxPoint x="572" y="450" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-16" value="Usuário insere series com a carga e numeros de reps no exercicio" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="330" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-17" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="NXEukAKlA3xqkjOK2SxF-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="340" as="sourcePoint" />
+            <mxPoint x="578" y="319" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-18" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" target="NXEukAKlA3xqkjOK2SxF-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="290" y="360" as="sourcePoint" />
+            <mxPoint x="570" y="475" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-19" value="Todas as persistencias ocorrem no momento em que o usuário termina a ação" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="380" y="430" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-20" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="685" width="230" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-21" value="Front end" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="655" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-22" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="685" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-23" value="Banco de dados móvel" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="655" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-24" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="895" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-25" value="Banco de dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="855" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-26" value="Usuário cria novo treino, somente nome" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="705" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-27" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.14;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="NXEukAKlA3xqkjOK2SxF-26" target="NXEukAKlA3xqkjOK2SxF-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="835" as="sourcePoint" />
+            <mxPoint x="570" y="785" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-29" value="Usuário insere exercicios nesse treino" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="775" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-30" value="Cenário sem internet em nenhuma etapa" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="600" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-31" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.14;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="785" as="sourcePoint" />
+            <mxPoint x="578" y="764" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-33" value="Usuário insere series com a carga e numeros de reps no exercicio" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="845" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-34" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="NXEukAKlA3xqkjOK2SxF-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="855" as="sourcePoint" />
+            <mxPoint x="578" y="834" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-36" value="Persistencia para o banco ocorre na próxima vez que entra no app" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="750" y="825" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-37" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="730" y="800" as="sourcePoint" />
+            <mxPoint x="740" y="880" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-43" value="Treino, exercicios e series - Não sincronizado&lt;div&gt;Necessário um flag para indicar&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="700" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-44" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1155" width="230" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-45" value="Front end" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1125" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-46" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="1155" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-47" value="Banco de dados móvel" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="1125" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-48" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="1365" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-49" value="Banco de dados" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="1325" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-50" value="Usuário cria novo treino, somente nome" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="1175" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-51" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.14;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="NXEukAKlA3xqkjOK2SxF-50" target="NXEukAKlA3xqkjOK2SxF-46">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="1305" as="sourcePoint" />
+            <mxPoint x="570" y="1255" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-52" value="Usuário insere exercicios nesse treino" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="1245" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-53" value="Cenário sem internet em algumas etapas" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1070" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-54" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.009;entryY=0.14;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="1255" as="sourcePoint" />
+            <mxPoint x="578" y="1234" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-55" value="Usuário insere series com a carga e numeros de reps no exercicio" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="1315" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-56" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="NXEukAKlA3xqkjOK2SxF-46">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="1325" as="sourcePoint" />
+            <mxPoint x="578" y="1304" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-57" value="Persistencia para o banco ocorre na próxima vez que entra no app" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="750" y="1295" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-58" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="730" y="1270" as="sourcePoint" />
+            <mxPoint x="740" y="1350" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-59" value="Treino sincronizado&lt;div&gt;Exercicios e séries não sincronizados&lt;br&gt;&lt;div&gt;Necessário um flag para indicar&lt;/div&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="580" y="1170" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-60" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="361" y="1226" as="sourcePoint" />
+            <mxPoint x="570" y="1370" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-62" value="&lt;span style=&quot;color: rgb(33, 33, 33); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve; background-color: rgb(255, 255, 255);&quot;&gt;https://localhost:7176/UsuarioTreino&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="480" y="50" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NXEukAKlA3xqkjOK2SxF-63" value="&lt;span style=&quot;color: rgb(33, 33, 33); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve; background-color: rgb(255, 255, 255);&quot;&gt;Passa o nome do treino. Exercicios e séries são opcionais&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="470" y="80" width="180" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
