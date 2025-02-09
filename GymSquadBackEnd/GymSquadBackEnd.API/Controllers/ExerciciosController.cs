@@ -18,7 +18,6 @@ namespace GymSquadBackEnd.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public ActionResult<List<Exercicio>> GetAll()
         {
             return Ok(_exerciciosService.GetAll());

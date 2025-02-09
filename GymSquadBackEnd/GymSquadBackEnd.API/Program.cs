@@ -9,6 +9,15 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuração da URL de escuta para permitir conexões externas
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Listen(System.Net.IPAddress.Any, 7176, listenOptions =>
+    {
+        listenOptions.UseHttps();  // HTTPS
+    });;  // Ou o IP da sua máquina
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -18,7 +27,19 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfraestructure(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()  // Permite qualquer origem
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -32,5 +53,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

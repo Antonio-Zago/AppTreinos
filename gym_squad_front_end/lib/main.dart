@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:gym_squad_front_end/Screens/LoginScreen.dart';
+import 'package:gym_squad_front_end/screens/login_screen.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -18,9 +18,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: "Inter",
         useMaterial3: true,
       ),
-      home: LoginScreen()
+      home: LoginScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
