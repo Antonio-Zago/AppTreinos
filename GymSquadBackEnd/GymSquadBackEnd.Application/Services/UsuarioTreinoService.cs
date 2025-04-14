@@ -59,7 +59,7 @@ namespace GymSquadBackEnd.Application.Services
                 {
                     var treinoExercicioDto = new TreinoExercicioDto()
                     {
-                        Id = treinoExercicio.Id,
+                        Id = treinoExercicio.ExercicioId,
                         Foto = treinoExercicio.Exercicio.Foto,
                         Nome = treinoExercicio.Exercicio.Nome,
                     };

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/screens/login_screen.dart';
+import 'package:gym_squad_front_end/screens/treino_individual_iniciado_screen.dart';
+import 'package:gym_squad_front_end/screens/treinos_individuais_screen.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -18,10 +20,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        fontFamily: "Inter",
+        fontFamily: "Spartan",
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+       routes: {
+        '/': (context) => LoginScreen(),
+        '/treinos-individuais': (context) => TreinosIndividuaisScreen(),
+        '/treino-individual-iniciado' :(context) => TreinoIndividualIniciadoScreen(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

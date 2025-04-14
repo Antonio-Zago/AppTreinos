@@ -63,6 +63,7 @@ namespace GymSquadBackEnd.API.Controllers
                     Expiration = token.ValidTo,
                     Usuario = user.Nome,
                     Email = user.Email,
+                    Id = user.Id
                 });
             }
             return Unauthorized();

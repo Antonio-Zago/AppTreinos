@@ -61,8 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       fazendoLogin = false;
     });
+
+    Navigator.pushReplacementNamed(context, '/treinos-individuais');
   
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {

@@ -13,6 +13,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
       DateTime.parse(json['expiration'] as String),
       json['usuario'] as String,
       json['email'] as String,
+      (json['id'] as num).toInt(),
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'expiration': instance.expiration.toIso8601String(),
       'usuario': instance.usuario,
       'email': instance.email,
+      'id': instance.id,
     };

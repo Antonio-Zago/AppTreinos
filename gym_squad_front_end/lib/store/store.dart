@@ -8,8 +8,10 @@ class Store {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String? valor = prefs.getString(chave);
-
-    return json.decode(valor!);
+    if(valor != null){
+      return json.decode(valor);
+    }
+    return null;
   }
 
   static Future<void> salvarValor(String chave, Map<String, dynamic> valor) async{

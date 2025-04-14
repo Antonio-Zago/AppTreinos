@@ -121,6 +121,10 @@ flutter:
         - asset: assets/fonts/inter/static/Inter_28pt-BoldItalic.ttf
         - asset: assets/fonts/inter/static/Inter_28pt-ExtraBoldItalic.ttf
         - asset: assets/fonts/inter/static/Inter_28pt-BlackItalic.ttf
+    - family: Spartan
+      fonts:
+        - asset: assets/fonts/spartan/static/LeagueSpartan-Regular.ttf
+        - asset: assets/fonts/spartan/static/LeagueSpartan-Bold.ttf
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -35,5 +35,11 @@ namespace GymSquadBackEnd.Infraestructure.Context
 
         public DbSet<Serie> Series { get; set; }
 
+        public DbSet<DadosTreino> Dados_Treino { get; set; }
+
+        public DbSet<DadosTreinoExercicios> Dados_Treino_Exercicios { get; set; }
+
+        public DbSet<DadosTreinoExerciciosSerie> Dados_Treino_Exercicios_Series { get; set; }
+
     }
 }
