@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'treino_exercicios_response.dart';
+part of 'treino_exercicios_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TreinoExerciciosResponse _$TreinoExerciciosResponseFromJson(
+TreinoExerciciosRequest _$TreinoExerciciosRequestFromJson(
         Map<String, dynamic> json) =>
-    TreinoExerciciosResponse(
-      (json['id'] as num?)?.toInt(),
+    TreinoExerciciosRequest(
+      (json['exercicioId'] as num).toInt(),
+      (json['series'] as List<dynamic>)
+          .map((e) => SerieRequest.fromJson(e as Map<String, dynamic>))
+          .toList(),
       json['foto'] as String?,
       json['nome'] as String,
-      (json['series'] as List<dynamic>)
-          .map((e) => SerieResponse.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
-Map<String, dynamic> _$TreinoExerciciosResponseToJson(
-        TreinoExerciciosResponse instance) =>
+Map<String, dynamic> _$TreinoExerciciosRequestToJson(
+        TreinoExerciciosRequest instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'exercicioId': instance.exercicioId,
       'foto': instance.foto,
       'nome': instance.nome,
       'series': instance.series,

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/utils/color_constants.dart';
 
 class ButtonDefault extends StatefulWidget {
-  const ButtonDefault({super.key, required this.funcao, required this.label});
+  const ButtonDefault({super.key, required this.funcao, required this.label, this.cor});
 
   final Function() funcao;
   final String label;
+  final Color? cor;
 
   @override
   State<ButtonDefault> createState() => _ButtonDefaultState();
@@ -30,7 +31,7 @@ class _ButtonDefaultState extends State<ButtonDefault> {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(ColorConstants.douradoPadrao),
+            backgroundColor: widget.cor ?? Color(ColorConstants.douradoPadrao),
             
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             shape: LinearBorder.bottom()

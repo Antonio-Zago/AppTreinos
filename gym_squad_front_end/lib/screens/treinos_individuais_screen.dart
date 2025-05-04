@@ -60,6 +60,7 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
         children: [ !_carregouTreinos
             ? CircularProgressIndicatorDefault()
             : ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: treinos!.treinos.length,
@@ -114,6 +115,24 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                     );
                   },
                 ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 25, 0),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child:CircleAvatar(
+                      backgroundColor:Color(ColorConstants.douradoPadrao),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/novo-treino');
+                        },
+                        icon: Icon(Icons.add),
+                        color:Color(ColorConstants.linhasGrids)
+                      ),
+                      radius: 25,
+                    ),
+                  ),
+                )
+                
         ]
       ),
     );

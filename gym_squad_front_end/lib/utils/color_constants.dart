@@ -6,7 +6,7 @@ class ColorConstants {
   static const int cinzaInputDesabilitado = 0xff9A9797;
   
   static const int pretoPadrao = 0xff000000;
-  static const int verdeEscuroPadrao = 0xff749655;
-  static const int azulEscuroPadrao = 0xff291AFF;
+  static const int verdeEscuroPadrao = 0xff3F762E;
+  static const int azulEscuroPadrao = 0xff1C0194;
   
 }

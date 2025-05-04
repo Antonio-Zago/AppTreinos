@@ -8,7 +8,7 @@ class UsuarioTreinosResponse{
   UsuarioTreinosResponse(this.usuarioId, this.treinoId, this.nomeTreino, this.exercicios);
 
   final int usuarioId;
-  final int treinoId;
+  final int? treinoId;
   final String nomeTreino;
   final List<TreinoExerciciosResponse> exercicios;
 

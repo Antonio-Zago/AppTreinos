@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:gym_squad_front_end/exceptions/unauthorized_exception.dart';
+import 'package:gym_squad_front_end/models/api/exercicios/exercicio_response.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_request.dart';
+import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_response.dart';
 import 'package:gym_squad_front_end/store/store.dart';
 import 'package:gym_squad_front_end/utils/api_codes_constants.dart';
@@ -60,6 +62,37 @@ class ApiClient{
     }
   }
 
+  Future<List< ExercicioResponse>> getAllExercicios(String token) async {
+
+    List<ExercicioResponse> exercicios = [];
+
+    try {
+      _dio.options.headers = {
+        'Authorization': 'Bearer $token',  // Adiciona o token no cabeçalho
+        'Accept': 'application/json',
+      };
+
+      var response = await _dio.get(
+        ApiRoutes.urlBase + ApiRoutes.getAllExercicios
+      );
+
+      var responseData = response.data;
+
+      for(var data in responseData){
+        ExercicioResponse exercicio = ExercicioResponse.fromJson(data);
+
+        exercicios.add(exercicio);
+      }
+
+      
+
+      return exercicios;
+
+    }  on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> postTreinoFinalizado(TreinoIniciadoRequest request, String token) async {
 
     try {
@@ -82,5 +115,30 @@ class ApiClient{
       throw Exception(e.toString());
     }
   }
+
+  Future<UsuarioTreinosResponse> postTreinoNovo(UsuarioTreinosRequest request, String token) async {
+    try {
+
+      _dio.options.headers = {
+        'Authorization': 'Bearer $token',  // Adiciona o token no cabeçalho
+        'Accept': 'application/json',
+      };
+
+      var response = await _dio.post(
+        ApiRoutes.urlBase + ApiRoutes.treinosInidividuaisUsuario,
+        data: request.toJson()
+      );
+
+      var responseData = response.data;
+
+      var retorno = UsuarioTreinosResponse.fromJson(responseData);
+
+      return retorno;
+
+    }  on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
 }
 

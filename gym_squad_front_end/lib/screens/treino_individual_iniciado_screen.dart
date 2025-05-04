@@ -28,8 +28,47 @@ class _TreinoIndividualIniciadoScreenState
   Map<String, TextEditingController> listControllersReps = {};
   Map<String, TextEditingController> listControllersCarga = {};
   Map<String, bool> listSerieConcluidaController = {};
+  bool carregando = false;
 
-  void _finalizarTreino(int treinoId, List<TreinoExerciciosResponse> exercicios) async {
+  Future _mostrarDialogo(BuildContext context, int treinoId, List<TreinoExerciciosResponse> exercicios) async {
+
+    setState(() {
+      carregando = true;
+    });
+
+    return showDialog(
+      context: context, 
+      builder: (context)=>AlertDialog(
+          title: Text('Deseja finalizar o treino?'),
+          actions: [
+            TextButton(
+              onPressed: (){
+                setState(() {
+                  carregando = false;
+                });
+                Navigator.of(context).pop();
+              }, 
+              child: Text('Não')
+            ),
+            TextButton(
+              onPressed: (){
+                _finalizarTreino(treinoId, exercicios);
+                setState(() {
+                  carregando = false;
+                });
+                Navigator.pushReplacementNamed(
+                                        context,
+                                        '/treinos-individuais',
+                                      );
+              }, 
+              child: Text('Sim')
+            )
+          ],
+      )
+    );
+  }
+
+  Future _finalizarTreino(int treinoId, List<TreinoExerciciosResponse> exercicios) async {
 
     List<ExercicioIniciadoRequest> exerciciosRequest = [];
 
@@ -54,7 +93,7 @@ class _TreinoIndividualIniciadoScreenState
 
       }
 
-      var exercicioRequest = ExercicioIniciadoRequest(exercicioId,List.from(seriesRequest));
+      var exercicioRequest = ExercicioIniciadoRequest(exercicioId!,List.from(seriesRequest));
 
       exerciciosRequest.add(exercicioRequest);
 
@@ -64,19 +103,6 @@ class _TreinoIndividualIniciadoScreenState
     }
 
     await treinosInidividuaisBusiness.postTreinoFinalizado(exerciciosRequest, treinoId);
-  }
-
-  _carregarRequest(){
-    List<ExercicioIniciadoRequest> exercicios = [];
-
-
-    var quantidadeSeries = listControllersReps.length;
-
-    for (var numeroSerie =0; numeroSerie < quantidadeSeries; numeroSerie++){
-
-    }
-    var contadorExercicio = 0;
-    var contadorSerie = 0;
 
   }
 
@@ -272,8 +298,11 @@ class _TreinoIndividualIniciadoScreenState
               );
             },
           ),
+          carregando ?
+          CircularProgressIndicator()
+          :
           ButtonDefault(funcao: (){
-            _finalizarTreino(treinoId, exercicios, );
+            _mostrarDialogo(context,treinoId, exercicios, );
           }, label: "Terminar treino")
         ]
         ),

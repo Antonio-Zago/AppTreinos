@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/screens/login_screen.dart';
+import 'package:gym_squad_front_end/screens/novo_treino_screen.dart';
+import 'package:gym_squad_front_end/screens/selecao_exercicio_screen.dart';
 import 'package:gym_squad_front_end/screens/treino_individual_iniciado_screen.dart';
 import 'package:gym_squad_front_end/screens/treinos_individuais_screen.dart';
 
@@ -24,9 +26,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
        routes: {
-        '/': (context) => LoginScreen(),
+        '/': (context) => TreinosIndividuaisScreen(),
         '/treinos-individuais': (context) => TreinosIndividuaisScreen(),
         '/treino-individual-iniciado' :(context) => TreinoIndividualIniciadoScreen(),
+        '/novo-treino' :(context) => NovoTreinoScreen(),
+        '/add-exercicio' :(context) => SelecaoExercicioScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

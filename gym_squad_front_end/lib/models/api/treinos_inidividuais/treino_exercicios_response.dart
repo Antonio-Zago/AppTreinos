@@ -7,7 +7,7 @@ part 'treino_exercicios_response.g.dart';
 class TreinoExerciciosResponse{
   TreinoExerciciosResponse(this.id, this.foto, this.nome, this.series);
 
-  final int id;
+  final int? id;
   final String? foto;
   final String nome;
   final List<SerieResponse> series;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/business/login_business.dart';
-import 'package:gym_squad_front_end/components/commum/alert_dialog_error.dart';
+import 'package:gym_squad_front_end/components/commum/alert_dialog_default.dart';
 import 'package:gym_squad_front_end/components/commum/button_default.dart';
 import 'package:gym_squad_front_end/components/commum/circular_progress_indicator_default.dart';
 import 'package:gym_squad_front_end/components/commum/text_field_default.dart';
