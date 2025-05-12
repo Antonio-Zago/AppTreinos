@@ -15,8 +15,10 @@ namespace GymSquadBackEnd.Domain.Interfaces
 
         public UsuarioTreino Update(UsuarioTreino entidade);
 
-        public UsuarioTreino Delete(UsuarioTreino entidade);
+        public void Delete(UsuarioTreino entidade);
 
         public IEnumerable<UsuarioTreino> GetByUserId(int userId);
+
+        public UsuarioTreino GetByTreinoId(int treinoId);
     }
 }

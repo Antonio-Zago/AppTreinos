@@ -10,7 +10,7 @@ class TreinoExerciciosRequest{
 
   final int exercicioId;
   final String? foto;
-  final String nome;
+  final String? nome;
   final List<SerieRequest> series;
 
   factory TreinoExerciciosRequest.fromJson(Map<String, dynamic> json) => _$TreinoExerciciosRequestFromJson(json);

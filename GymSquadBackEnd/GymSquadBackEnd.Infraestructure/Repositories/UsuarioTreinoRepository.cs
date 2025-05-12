@@ -44,12 +44,15 @@ namespace GymSquadBackEnd.Infraestructure.Repositories
             return entidade;
         }
 
-        public UsuarioTreino Delete(UsuarioTreino entidade)
+        public void Delete(UsuarioTreino entidade)
         {
             _appDbContext.Remove(entidade);
             _appDbContext.SaveChanges();
+        }
 
-            return entidade;
+        public UsuarioTreino GetByTreinoId(int treinoId)
+        {
+            return _appDbContext.Usuarios_Treinos.Where(a => a.TreinoId == treinoId).FirstOrDefault();
         }
     }
 }

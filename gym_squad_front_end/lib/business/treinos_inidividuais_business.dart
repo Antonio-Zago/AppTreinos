@@ -43,6 +43,30 @@ class TreinosInidividuaisBusiness {
 
   }
 
+   Future<void> deleteTreino(int? treinoId) async{
+      
+    UsuarioTreinos? usuarioTreinos;
+
+    var credenciais = await _retornarCredenciais();
+
+    final temInternet = await Connectivity().checkConnectivity(); 
+
+    if(temInternet[0] != ConnectivityResult.none){
+      await apiClient.deleteTreino(credenciais.token,treinoId!);      
+    }
+
+    //Apagar do dispositivo
+    var treinosIndividuaisNoDispositivoJson = await _retornarTreinosDoDispositivo(credenciais.id);
+
+    if(treinosIndividuaisNoDispositivoJson != null){
+      usuarioTreinos = UsuarioTreinos.fromJson(treinosIndividuaisNoDispositivoJson);
+
+      usuarioTreinos.treinos.removeWhere((u) => u.treinoId == treinoId);
+
+      _gravarTreinosNoDispositivo(usuarioTreinos, credenciais.id);
+    }
+  }
+
   Future<void> postTreinoFinalizado(List<ExercicioIniciadoRequest> exercicios, int treinoId) async{
 
     var credenciais = await _retornarCredenciais();
@@ -57,10 +81,14 @@ class TreinosInidividuaisBusiness {
   }
 
   Future<void> postTreinoNovo(List<TreinoExerciciosRequest> exercicios, String nomeTreino) async{
+    await postTreino(exercicios, nomeTreino, null);
+  }
+
+  Future<void> postTreino(List<TreinoExerciciosRequest> exercicios, String nomeTreino, int? treinoId) async{
 
     var credenciais = await _retornarCredenciais();
     
-    UsuarioTreinosRequest request = UsuarioTreinosRequest(credenciais.id,nomeTreino, exercicios, null);
+    UsuarioTreinosRequest request = UsuarioTreinosRequest(credenciais.id,nomeTreino, exercicios, treinoId);
 
     UsuarioTreinos usuarioTreinos;
 
@@ -87,15 +115,29 @@ class TreinosInidividuaisBusiness {
       }
 
       //Tipo dos treinos salvos no dispositivo
-      UsuarioTreinosResponse novoTreino = UsuarioTreinosResponse(credenciais.id,novoTreinoResponse.treinoId,nomeTreino,exerciciosNovo);
+     
 
        if(treinosDispositivo != null){
         usuarioTreinos = UsuarioTreinos.fromJson(treinosDispositivo);
-
-        usuarioTreinos.treinos.add(novoTreino);
+        bool encontrouTreino = false;
+        //Fazer lógica se tiver o mesmo Usuarioid e treino Id só da update no registro
+        for(var treino in usuarioTreinos.treinos){
+          if(treino.treinoId == treinoId && treino.usuarioId == credenciais.id){
+            treino.exercicios = novoTreinoResponse.exercicios;
+            treino.nomeTreino = novoTreinoResponse.nomeTreino;
+            encontrouTreino = true;
+          }
+        }
+        if(!encontrouTreino){
+           UsuarioTreinosResponse novoTreino = UsuarioTreinosResponse(credenciais.id,novoTreinoResponse.treinoId,nomeTreino,exerciciosNovo);
+        
+          usuarioTreinos.treinos.add(novoTreino);
+        }
+       
       }
       else{
         List<UsuarioTreinosResponse> novoListaTreinos = [];
+        UsuarioTreinosResponse novoTreino = UsuarioTreinosResponse(credenciais.id,novoTreinoResponse.treinoId,nomeTreino,exerciciosNovo);
         novoListaTreinos.add(novoTreino);
         usuarioTreinos = UsuarioTreinos(novoListaTreinos);
       }
@@ -113,17 +155,30 @@ class TreinosInidividuaisBusiness {
           seriesNovas.add(serieNova);
         }
 
-        TreinoExerciciosResponse exercicioNovo = TreinoExerciciosResponse(null, exercicio.foto,exercicio.nome,seriesNovas);
+        TreinoExerciciosResponse exercicioNovo = TreinoExerciciosResponse(null, exercicio.foto,exercicio.nome!,seriesNovas);
         exerciciosNovo.add(exercicioNovo);
       }
 
       //Tipo dos treinos salvos no dispositivo
-      UsuarioTreinosResponse novoTreino = UsuarioTreinosResponse(credenciais.id,null,nomeTreino,exerciciosNovo);
+      UsuarioTreinosResponse novoTreino = UsuarioTreinosResponse(credenciais.id,treinoId,nomeTreino,exerciciosNovo);
 
-       if(treinosDispositivo != null){
+      if(treinosDispositivo != null){
         usuarioTreinos = UsuarioTreinos.fromJson(treinosDispositivo);
 
-        usuarioTreinos.treinos.add(novoTreino);
+        bool encontrouTreino = false;
+        //Fazer lógica se tiver o mesmo Usuarioid e treino Id só da update no registro
+        for(var treino in usuarioTreinos.treinos){
+          if(treino.treinoId == treinoId && treino.usuarioId == credenciais.id){
+            treino.exercicios = exerciciosNovo;
+            treino.nomeTreino = nomeTreino;
+            encontrouTreino = true;
+          }
+        }
+        if(!encontrouTreino){
+          UsuarioTreinosResponse novoTreino = UsuarioTreinosResponse(credenciais.id,treinoId,nomeTreino,exerciciosNovo);
+        
+          usuarioTreinos.treinos.add(novoTreino);
+        }
       }
       else{
         List<UsuarioTreinosResponse> novoListaTreinos = [];

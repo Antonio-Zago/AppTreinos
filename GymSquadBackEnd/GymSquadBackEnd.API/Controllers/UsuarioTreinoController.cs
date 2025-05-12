@@ -26,6 +26,9 @@ namespace GymSquadBackEnd.API.Controllers
             return Ok(usuarioTreinoDtos);
         }
 
+
+        // Já é feito o update do treino do usuário por aqui
+        // Basta inserir o o id do treino no formulario
         [Authorize]
         [HttpPost]
         public ActionResult<UsuarioTreinoDto> Post([FromBody] UsuarioTreinoForm form)
@@ -34,5 +37,16 @@ namespace GymSquadBackEnd.API.Controllers
 
             return Ok(usuarioTreinoDtos);
         }
+
+        [Authorize]
+        [HttpDelete("{treinoId}")]
+        public ActionResult Delete(int treinoId)
+        {
+            _service.Delete(treinoId);
+
+            return Ok();
+        }
+
+
     }
 }

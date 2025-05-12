@@ -256,5 +256,12 @@ namespace GymSquadBackEnd.Application.Services
             }
             return serieList;
         }
+
+        public void Delete(int treinoId)
+        {
+            var usuarioTreinoEntidade = _repository.GetByTreinoId(treinoId);
+
+            _repository.Delete(usuarioTreinoEntidade);
+        }
     }
 }

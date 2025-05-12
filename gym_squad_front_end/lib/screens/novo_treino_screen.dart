@@ -162,7 +162,7 @@ class _NovoTreinoScreenState extends State<NovoTreinoScreen> {
                               )
                             : Container(),
                         Text(
-                          exercicio.nome,
+                          exercicio.nome!,
                           style: TextStyle(
                               color: Color(ColorConstants.brancoPadrao),
                               fontWeight: FontWeight.bold),

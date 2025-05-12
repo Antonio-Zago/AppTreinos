@@ -62,6 +62,24 @@ class ApiClient{
     }
   }
 
+  Future<void> deleteTreino(String token, int idTreino) async {
+
+    try {
+      _dio.options.headers = {
+        'Authorization': 'Bearer $token',  // Adiciona o token no cabeçalho
+        'Accept': 'application/json',
+      };
+
+      await _dio.delete(
+        ApiRoutes.urlBase + ApiRoutes.treinosInidividuaisUsuario + idTreino.toString()
+
+      );
+
+    }  on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
   Future<List< ExercicioResponse>> getAllExercicios(String token) async {
 
     List<ExercicioResponse> exercicios = [];

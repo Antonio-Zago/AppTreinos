@@ -36,6 +36,54 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
     });
   }
 
+  Future<void> _deletarTreino(int? treinoId) async{
+
+    
+
+    Future.delayed(Duration.zero, () async {
+      await treinosInidividuaisBusiness.deleteTreino(treinoId);
+      await _atribuirTreinosUsuario();
+    });
+    
+  } 
+
+  Future _mostrarDialogoDeletarTreino(BuildContext context, int? treinoId) async {
+
+    setState(() {
+      _carregouTreinos = false;
+    });
+
+    return showDialog(
+      context: context, 
+      builder: (context)=>AlertDialog(
+          title: Text('Deseja mesmo deletar o treino?'),
+          actions: [
+            TextButton(
+              onPressed: (){
+                setState(() {
+                  _carregouTreinos = true;
+                });
+                Navigator.of(context).pop();
+              }, 
+              child: Text('Não')
+            ),
+            TextButton(
+              onPressed: () async{
+                await _deletarTreino(treinoId);
+
+                setState(() {
+                  _carregouTreinos = true;
+                });
+
+                Navigator.of(context).pop();
+              }, 
+              child: Text('Sim')
+            )
+          ],
+      )
+    );
+  }
+
   @override
   void initState() {
     setState(() {
@@ -104,10 +152,35 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                               ),
                               CircleAvatar(
                                   backgroundColor:
-                                      Color(ColorConstants.douradoPadrao),
+                                      Color(ColorConstants.azulClaroPadrao),
                                   child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                        context,
+                                        '/treino-individual-edit',
+                                        arguments: <String, dynamic>{
+                                          'exercicios': treinos!
+                                              .treinos[index].exercicios,
+                                          'nomeTreino': treinos!
+                                              .treinos[index].nomeTreino,
+                                          'treinoId': treinos!
+                                              .treinos[index].treinoId,
+                                        },
+                                      );
+                                      },
                                       icon: Icon(Icons.edit),
+                                      color:
+                                          Color(ColorConstants.linhasGrids))),
+                              CircleAvatar(
+                                  backgroundColor:
+                                      Color(ColorConstants.vermelhoPadrao),
+                                  child: IconButton(
+                                      onPressed: () async{
+                                        
+
+                                        await _mostrarDialogoDeletarTreino(context,treinos!.treinos[index].treinoId);
+                                      },
+                                      icon: Icon(Icons.delete),
                                       color:
                                           Color(ColorConstants.linhasGrids))),
                             ]),

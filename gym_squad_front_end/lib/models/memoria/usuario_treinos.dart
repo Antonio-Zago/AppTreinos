@@ -7,7 +7,7 @@ part 'usuario_treinos.g.dart';
 class UsuarioTreinos{
   UsuarioTreinos(this.treinos);
 
-  final List<UsuarioTreinosResponse> treinos;
+  List<UsuarioTreinosResponse> treinos;
 
   factory UsuarioTreinos.fromJson(Map<String, dynamic> json) => _$UsuarioTreinosFromJson(json);
 

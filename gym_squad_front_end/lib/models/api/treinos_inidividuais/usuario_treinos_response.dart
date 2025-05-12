@@ -7,10 +7,10 @@ part 'usuario_treinos_response.g.dart';
 class UsuarioTreinosResponse{
   UsuarioTreinosResponse(this.usuarioId, this.treinoId, this.nomeTreino, this.exercicios);
 
-  final int usuarioId;
-  final int? treinoId;
-  final String nomeTreino;
-  final List<TreinoExerciciosResponse> exercicios;
+  int usuarioId;
+  int? treinoId;
+  String nomeTreino;
+  List<TreinoExerciciosResponse> exercicios;
 
   factory UsuarioTreinosResponse.fromJson(Map<String, dynamic> json) => _$UsuarioTreinosResponseFromJson(json);
 

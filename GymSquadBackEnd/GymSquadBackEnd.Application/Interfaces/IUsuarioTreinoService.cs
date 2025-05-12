@@ -12,5 +12,7 @@ namespace GymSquadBackEnd.Application.Interfaces
         public List<UsuarioTreinoDto> getByUserId(int userId);
 
         public UsuarioTreinoDto Post(UsuarioTreinoForm form);
+
+        public void Delete(int treinoId);
     }
 }
