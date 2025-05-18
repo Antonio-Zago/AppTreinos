@@ -153,21 +153,40 @@ class _NovoTreinoScreenState extends State<NovoTreinoScreen> {
                     }
 
                     return ListTile(
-                      title: Row(spacing: 10, children: [
-                        bytes != null
-                            ? Image.memory(
-                                bytes,
-                                width: 100,
-                                height: 100,
-                              )
-                            : Container(),
-                        Text(
-                          exercicio.nome!,
-                          style: TextStyle(
-                              color: Color(ColorConstants.brancoPadrao),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ]),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        spacing: 10, 
+                        children: [
+                          bytes != null
+                              ? Image.memory(
+                                  bytes,
+                                  width: 100,
+                                  height: 100,
+                                )
+                              : Container(),
+                          Text(
+                            exercicio.nome!,
+                            style: TextStyle(
+                                color: Color(ColorConstants.brancoPadrao),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Padding(
+                                  padding: EdgeInsets.only(right: 20),
+                                  child: CircleAvatar(
+                                      backgroundColor:
+                                          Color(ColorConstants.vermelhoPadrao),
+                                      child: IconButton(
+                                          onPressed: (){
+                                            setState(() {
+                                                exerciciosRequest.removeAt(index);
+                                            });
+                                          },
+                                          icon: Icon(Icons.delete),
+                                          color:
+                                              Color(ColorConstants.linhasGrids))),
+                                ),
+                              ]
+                      ),
                       subtitle: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -272,7 +291,19 @@ class _NovoTreinoScreenState extends State<NovoTreinoScreen> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         ),
-                                      )
+                                      ),
+                                      CircleAvatar(
+                                  backgroundColor:
+                                      Color(ColorConstants.vermelhoPadrao),
+                                  child: IconButton(
+                                      onPressed: (){
+                                        setState(() {
+                                          exerciciosRequest[index].series.removeAt(indexSerie);
+                                        });
+                                      },
+                                      icon: Icon(Icons.delete),
+                                      color:
+                                          Color(ColorConstants.linhasGrids))),
                                     ],
                                   ),
                                 );

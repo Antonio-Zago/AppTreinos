@@ -171,12 +171,32 @@ class _TreinoIndividualEditScreenState
                       margin: EdgeInsets.only(bottom: 10),
                       color: Color(ColorConstants.linhasGrids),
                       child: ListTile(
-                          title: Text(
-                            exercicios[index].nome!,
-                            style: TextStyle(
-                                    color: Color(ColorConstants.brancoPadrao),
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                exercicios[index].nome!,
+                                style: TextStyle(
+                                        color: Color(ColorConstants.brancoPadrao),
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 20),
+                                child: CircleAvatar(
+                                    backgroundColor:
+                                        Color(ColorConstants.vermelhoPadrao),
+                                    child: IconButton(
+                                        onPressed: (){
+                                          setState(() {
+                                            exercicios.removeAt(index);
+                                        });
+                                        },
+                                        icon: Icon(Icons.delete),
+                                        color:
+                                            Color(ColorConstants.linhasGrids))),
+                              ),
+                            ]
                           ),
                           subtitle: Container(
                             decoration: BoxDecoration(
@@ -275,6 +295,18 @@ class _TreinoIndividualEditScreenState
                                               ),
                                             ),
                                           ),
+                                          CircleAvatar(
+                                  backgroundColor:
+                                      Color(ColorConstants.vermelhoPadrao),
+                                  child: IconButton(
+                                      onPressed: (){
+                                        setState(() {
+                                          exercicios[index].series.removeAt(indexSeries);
+                                        });
+                                      },
+                                      icon: Icon(Icons.delete),
+                                      color:
+                                          Color(ColorConstants.linhasGrids))),
                                         ]),
                                       );
                                     }),
