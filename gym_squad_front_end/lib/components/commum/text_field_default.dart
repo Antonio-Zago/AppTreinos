@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/utils/color_constants.dart';
 
 class TextFieldDefault extends StatefulWidget {
-  const TextFieldDefault({super.key, required this.controller, required this.titulo, required this.validator});
+  const TextFieldDefault({super.key, required this.controller, required this.titulo, required this.validator, this.campoSenha});
 
   final TextEditingController controller;
   final String titulo;
   final FormFieldValidator validator;
+  final bool? campoSenha;
 
   @override
   State<TextFieldDefault> createState() => _TextFieldDefaultState();
@@ -14,10 +15,13 @@ class TextFieldDefault extends StatefulWidget {
 
 class _TextFieldDefaultState extends State<TextFieldDefault> {
 
-
+  bool _senhaVisivel = false;
 
   @override
   Widget build(BuildContext context) {
+
+    var campoSenhaWidget = widget.campoSenha ?? false;
+
     return Column(
       children: [
         Padding(
@@ -39,12 +43,24 @@ class _TextFieldDefaultState extends State<TextFieldDefault> {
           child: TextFormField(
             validator: widget.validator,
             controller: widget.controller,
+            obscureText: campoSenhaWidget ? !_senhaVisivel : false,
             decoration: InputDecoration(
                 fillColor: Color(ColorConstants.brancoPadrao),
                 filled: true,
+                suffixIcon: campoSenhaWidget ? IconButton(
+                  icon: Icon(
+                    _senhaVisivel ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _senhaVisivel = !_senhaVisivel;
+                    });
+                  },
+                ) : null,
                 border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.all(Radius.circular(20)))),
+            
           ),
         ),
       ],

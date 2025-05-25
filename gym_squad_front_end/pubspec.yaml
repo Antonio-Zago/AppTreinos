@@ -65,6 +65,7 @@ flutter:
     - assets/images/logo.png
     - assets/images/icones/erro.png
     - assets/images/icones/ok.png
+    - assets/images/fundo-login.png
   fonts:
     - family: Inter
       fonts:

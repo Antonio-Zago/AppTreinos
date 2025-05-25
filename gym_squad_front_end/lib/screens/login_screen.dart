@@ -70,59 +70,55 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(ColorConstants.fundoApp),
-        alignment: Alignment.bottomCenter,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/fundo-login.png'),
+            fit: BoxFit.cover, // cobre toda a tela
+          ),
+        ),
+        alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
               children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  width: 200,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(150)),
-                    color: Color(ColorConstants.brancoPadrao),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(30, 150, 30, 30),
-                    child: Column(
-                      children: [
-                    
-                        TextFieldDefault(
-                          titulo: "Email",
-                          controller: emailController,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Informe o email';
-                            }
-                          },
-                        ),
-                        
-                        TextFieldDefault(
-                          titulo: "Senha",
-                          controller: senhaController,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Informe a senha';
-                            }
-                          },
-                        ),
-                        fazendoLogin ?
-                        CircularProgressIndicatorDefault(
-            
-                        ) :
-                        ButtonDefault(
-                          funcao: () async {
-                            await login();
-                          }, 
-                          label: "Entrar"
-                        )
-                      ],
-                    ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 150, 30, 30),
+                  child: Column(
+                    children: [
+                  
+                      TextFieldDefault(
+                        titulo: "Email",
+                        controller: emailController,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Informe o email';
+                          }
+                        },
+                      ),
+                      
+                      TextFieldDefault(
+                        titulo: "Senha",
+                        controller: senhaController,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Informe a senha';
+                          }
+                        },
+                        //Falta o botão icone para 
+                        campoSenha: true,
+                      ),
+                      fazendoLogin ?
+                      CircularProgressIndicatorDefault(
+                            
+                      ) :
+                      ButtonDefault(
+                        funcao: () async {
+                          await login();
+                        }, 
+                        label: "Entrar"
+                      )
+                    ],
                   ),
                 )
               ],
