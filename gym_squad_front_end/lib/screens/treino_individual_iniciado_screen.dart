@@ -7,6 +7,8 @@ import 'package:gym_squad_front_end/components/commum/circular_progress_indicato
 import 'package:gym_squad_front_end/components/commum/drawer_default.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/exercicio_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/serie_iniciado_request.dart';
+import 'package:gym_squad_front_end/models/api/treinos_inidividuais/serie_request.dart';
+import 'package:gym_squad_front_end/models/api/treinos_inidividuais/treino_exercicios_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/treino_exercicios_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_response.dart';
 import 'package:gym_squad_front_end/models/memoria/usuario_treinos.dart';
@@ -29,6 +31,7 @@ class _TreinoIndividualIniciadoScreenState
   Map<String, TextEditingController> listControllersCarga = {};
   Map<String, bool> listSerieConcluidaController = {};
   bool carregando = false;
+  String nomeTreino = "";
 
   Future _mostrarDialogo(BuildContext context, int treinoId, List<TreinoExerciciosResponse> exercicios) async {
 
@@ -36,36 +39,7 @@ class _TreinoIndividualIniciadoScreenState
       carregando = true;
     });
 
-    return showDialog(
-      context: context, 
-      builder: (context)=>AlertDialog(
-          title: Text('Deseja finalizar o treino?'),
-          actions: [
-            TextButton(
-              onPressed: (){
-                setState(() {
-                  carregando = false;
-                });
-                Navigator.of(context).pop();
-              }, 
-              child: Text('Não')
-            ),
-            TextButton(
-              onPressed: (){
-                _finalizarTreino(treinoId, exercicios);
-                setState(() {
-                  carregando = false;
-                });
-                Navigator.pushReplacementNamed(
-                                        context,
-                                        '/treinos-individuais',
-                                      );
-              }, 
-              child: Text('Sim')
-            )
-          ],
-      )
-    );
+    await _finalizarTreino(treinoId, exercicios);
   }
 
   Future _finalizarTreino(int treinoId, List<TreinoExerciciosResponse> exercicios) async {
@@ -73,6 +47,8 @@ class _TreinoIndividualIniciadoScreenState
     List<ExercicioIniciadoRequest> exerciciosRequest = [];
 
     List<SerieIniciadoRequest> seriesRequest = [];
+
+    bool teveAlteracaoCargaReps = false;
 
     var contadorExercicio = 0;
 
@@ -101,9 +77,79 @@ class _TreinoIndividualIniciadoScreenState
 
       contadorExercicio ++;
     }
+    var treinoIniciadoDispositivo = await treinosInidividuaisBusiness.getTreinosByUserIdAndTreinoId(treinoId);
 
-    await treinosInidividuaisBusiness.postTreinoFinalizado(exerciciosRequest, treinoId);
+    var treinoFinalizado = await treinosInidividuaisBusiness.postTreinoFinalizado(exerciciosRequest, treinoId, nomeTreino);
 
+    
+    List<TreinoExerciciosRequest> listaExerciciosRequest = [];
+
+    for(var exercicio in treinoFinalizado.exercicios){
+
+      List<SerieRequest> listaSeriesRequest = [];
+
+      var exercicioIniciadoDispositivo = treinoIniciadoDispositivo!.exercicios.firstWhere((exercicioDispositivo)=> exercicioDispositivo.id! == exercicio.exercicioId);
+
+      for(int i =0;i<exercicio.dadosTreinoExercicioSeries.length;i++){
+
+        var serieIniciadaRequest = exercicioIniciadoDispositivo.series[i];
+
+        if(!teveAlteracaoCargaReps){
+          teveAlteracaoCargaReps = serieIniciadaRequest.carga != exercicio.dadosTreinoExercicioSeries[i].carga ||
+                                 serieIniciadaRequest.repeticoes != exercicio.dadosTreinoExercicioSeries[i].repeticoes;
+        }
+        
+        var serieRequest = SerieRequest(exercicio.dadosTreinoExercicioSeries[i].repeticoes, exercicio.dadosTreinoExercicioSeries[i].carga);
+
+        listaSeriesRequest.add(serieRequest);
+      }
+
+      var treinoRequest= TreinoExerciciosRequest(exercicio.exercicioId,listaSeriesRequest, null, null);
+
+      listaExerciciosRequest.add(treinoRequest);
+    }
+
+    if(teveAlteracaoCargaReps){
+      return showDialog(
+        context: context, 
+        builder: (context)=>AlertDialog(
+            title: Text('Deseja salvar as alterações do treino?'),
+            actions: [
+              TextButton(
+                onPressed: (){
+                  setState(() {
+                    carregando = false;
+                  });
+                  Navigator.pushReplacementNamed(
+                                              context,
+                                                      '/treinos-individuais',
+                                                    );
+                }, 
+                child: Text('Não')
+              ),
+              TextButton(
+                onPressed: () async{
+                  await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId);
+                  setState(() {
+                    carregando = false;
+                  });
+                  Navigator.pushReplacementNamed(
+                                              context,
+                                                      '/treinos-individuais',
+                                                    );
+                }, 
+                child: Text('Sim')
+              )
+            ],
+        )
+      );
+    }
+    else{
+      setState(() {
+                    carregando = false;
+                  });
+                  Navigator.of(context).pop();
+    }
   }
 
   _iniciarVariaveis(List<TreinoExerciciosResponse> exercicios) {
@@ -142,6 +188,8 @@ class _TreinoIndividualIniciadoScreenState
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    nomeTreino = args["nomeTreino"];
+
     List<TreinoExerciciosResponse> exercicios = args["exercicios"];
     var treinoId = args["treinoId"];
     // Por causa disso que não atualiza
@@ -153,7 +201,7 @@ class _TreinoIndividualIniciadoScreenState
 
     return Scaffold(
       appBar: AppBarDefault(
-        title: args["nomeTreino"],
+        title: nomeTreino,
       ),
       body: BackgroundCompletoDefault(
         children: [

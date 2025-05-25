@@ -4,12 +4,15 @@ import 'package:gym_squad_front_end/models/api/login_request.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/exercicio_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_request.dart';
+import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_response.dart';
+import 'package:gym_squad_front_end/models/api/treinos_inidividuais/serie_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/serie_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/treino_exercicios_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/treino_exercicios_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_response.dart';
 import 'package:gym_squad_front_end/models/memoria/usuario_treinos.dart';
+import 'package:gym_squad_front_end/models/memoria/usuario_treinos_finalizados.dart';
 import 'package:gym_squad_front_end/store/store.dart';
 
 class TreinosInidividuaisBusiness {
@@ -43,6 +46,33 @@ class TreinosInidividuaisBusiness {
 
   }
 
+  Future<UsuarioTreinosResponse?> getTreinosByUserIdAndTreinoId(int treinoId) async{
+
+    UsuarioTreinos? usuarioTreinos;
+
+    var credenciais = await _retornarCredenciais();
+
+    var treinosIndividuaisNoDispositivoJson = await _retornarTreinosDoDispositivo(credenciais.id);
+
+    if(treinosIndividuaisNoDispositivoJson != null){
+      usuarioTreinos = UsuarioTreinos.fromJson(treinosIndividuaisNoDispositivoJson);
+    }
+      
+    //Aqui é necessário para ver se tem diferença entre o gravado no celular
+    // e no banco de dados
+
+    final temInternet = await Connectivity().checkConnectivity(); 
+
+    if(temInternet[0] != ConnectivityResult.none){
+      List<UsuarioTreinosResponse> usuarioTreinosResponse = await apiClient.getTreinosByUserId(credenciais.token,credenciais.id);      
+    
+      usuarioTreinos = UsuarioTreinos(usuarioTreinosResponse);
+    }
+
+    return usuarioTreinos!.treinos.firstWhere((treino) => treino.treinoId! == treinoId);
+
+  }
+
    Future<void> deleteTreino(int? treinoId) async{
       
     UsuarioTreinos? usuarioTreinos;
@@ -67,17 +97,29 @@ class TreinosInidividuaisBusiness {
     }
   }
 
-  Future<void> postTreinoFinalizado(List<ExercicioIniciadoRequest> exercicios, int treinoId) async{
+  Future<TreinoIniciadoResponse> postTreinoFinalizado(List<ExercicioIniciadoRequest> exercicios, int treinoId, String nomeTreino) async{
 
     var credenciais = await _retornarCredenciais();
       
     TreinoIniciadoRequest request = TreinoIniciadoRequest(credenciais.id,treinoId, exercicios);
 
-    await apiClient.postTreinoFinalizado(request, credenciais.token);   
+    var treinoFinalizado = await apiClient.postTreinoFinalizado(request, credenciais.token);   
 
-    //TODO
-    //Tenho que salvar as alterações desse treino finalizado no dispositivo
+    var usuarioTreinosFinalizadosDispositivoJson = await _retornarTreinosFinalizadoNoDispositivo(credenciais.id);
 
+    UsuarioTreinosFinalizados? usuarioTreinosFinalizadosDispositivo;
+
+    if(usuarioTreinosFinalizadosDispositivoJson == null){
+      usuarioTreinosFinalizadosDispositivo = UsuarioTreinosFinalizados([], credenciais.id);
+      usuarioTreinosFinalizadosDispositivo.treinos.add(treinoFinalizado);
+    }
+    else{
+      usuarioTreinosFinalizadosDispositivo = UsuarioTreinosFinalizados.fromJson(usuarioTreinosFinalizadosDispositivoJson);
+      usuarioTreinosFinalizadosDispositivo.treinos.add(treinoFinalizado);
+    }
+     await _gravarTreinosFinalizadoNoDispositivo(usuarioTreinosFinalizadosDispositivo, credenciais.id);
+
+     return treinoFinalizado;
   }
 
   Future<void> postTreinoNovo(List<TreinoExerciciosRequest> exercicios, String nomeTreino) async{
@@ -206,7 +248,14 @@ class TreinosInidividuaisBusiness {
     return Store.retornarValor("treinosIndividuais#$idUsuario");
   }
 
-  
+  Future<void> _gravarTreinosFinalizadoNoDispositivo (UsuarioTreinosFinalizados usuarioTreinos, int idUsuario) async{
+    Store.salvarValor("treinosIndividuaisFinalizados#$idUsuario", usuarioTreinos.toJson());
+  }
+
+
+  Future<Map<String,dynamic>?> _retornarTreinosFinalizadoNoDispositivo (int idUsuario) async{
+    return Store.retornarValor("treinosIndividuaisFinalizados#$idUsuario");
+  }
 
   
 

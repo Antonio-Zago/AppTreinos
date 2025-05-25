@@ -14,7 +14,7 @@ TreinoExerciciosRequest _$TreinoExerciciosRequestFromJson(
           .map((e) => SerieRequest.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['foto'] as String?,
-      json['nome'] as String,
+      json['nome'] as String?,
     );
 
 Map<String, dynamic> _$TreinoExerciciosRequestToJson(

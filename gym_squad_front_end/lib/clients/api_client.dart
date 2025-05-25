@@ -4,6 +4,7 @@ import 'package:gym_squad_front_end/exceptions/unauthorized_exception.dart';
 import 'package:gym_squad_front_end/models/api/exercicios/exercicio_response.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_request.dart';
+import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_response.dart';
 import 'package:gym_squad_front_end/store/store.dart';
@@ -111,7 +112,7 @@ class ApiClient{
     }
   }
 
-  Future<void> postTreinoFinalizado(TreinoIniciadoRequest request, String token) async {
+  Future<TreinoIniciadoResponse> postTreinoFinalizado(TreinoIniciadoRequest request, String token) async {
 
     try {
 
@@ -125,10 +126,10 @@ class ApiClient{
         data: request.toJson()
       );
 
-    } on DioException catch (dioError) {
-      if(dioError.response!.statusCode == ApiCodesConstants.semAutorizacao){
-        throw UnauthorizedException(message: "Não foi possível fazer login com essas credenciais");
-      }
+      var retorno = TreinoIniciadoResponse.fromJson(response.data);
+
+      return retorno;
+
     } on Exception catch (e){
       throw Exception(e.toString());
     }
