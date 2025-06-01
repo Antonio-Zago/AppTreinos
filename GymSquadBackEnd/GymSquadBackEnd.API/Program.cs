@@ -6,6 +6,7 @@ using GymSquadBackEnd.Infraestructure.Repositories;
 using GymSquadBackEnd.CrossCutting.Ioc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using GymSquadBackEnd.Application.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(); 
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

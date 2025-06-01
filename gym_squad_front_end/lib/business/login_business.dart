@@ -1,6 +1,7 @@
 import 'package:gym_squad_front_end/clients/api_client.dart';
 import 'package:gym_squad_front_end/models/api/login_request.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
+import 'package:gym_squad_front_end/models/api/register_request.dart';
 import 'package:gym_squad_front_end/store/store.dart';
 
 class LoginBusiness {
@@ -14,6 +15,14 @@ class LoginBusiness {
     LoginResponse? loginResponse = await apiClient.login(loginRequest.toJson());      
 
     await _salvarCredenciais(loginResponse);
+
+  }
+
+  Future<void> cadastrar(String email, String senha, String nome) async{
+
+    RegisterRequest registerRequest = RegisterRequest(email, senha,nome);
+
+    await apiClient.cadastrar(registerRequest);      
 
   }
 

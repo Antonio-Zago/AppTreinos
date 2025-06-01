@@ -47,6 +47,13 @@ namespace GymSquadBackEnd.Application.Services
         {
             var entidade = UsuarioMapper.ToEntidade(form);
 
+            var usuarioCadastradoComEmail = FindByEmail(form.Email);
+
+            if (usuarioCadastradoComEmail != null)
+            {
+                throw new Exception("Já existe usuário cadastrado com esse email");
+            }
+
             var entidadeSalva = _repository.Post(entidade);
 
             return UsuarioMapper.ToDto(entidadeSalva);

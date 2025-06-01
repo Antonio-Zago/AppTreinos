@@ -117,6 +117,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           await login();
                         }, 
                         label: "Entrar"
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: TextButton(
+                          child: Text(
+                            'CADASTRE-SE',
+                            style: TextStyle(
+                              color: Color(ColorConstants.brancoPadrao),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                              context,
+                                                      '/registro-usuario',
+                                                    );
+                          },
+                        ),
                       )
                     ],
                   ),

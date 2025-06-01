@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:gym_squad_front_end/exceptions/unauthorized_exception.dart';
 import 'package:gym_squad_front_end/models/api/exercicios/exercicio_response.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
+import 'package:gym_squad_front_end/models/api/register_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_request.dart';
@@ -28,6 +29,20 @@ class ApiClient{
       if(dioError.response!.statusCode == ApiCodesConstants.semAutorizacao){
         throw UnauthorizedException(message: "Não foi possível fazer login com essas credenciais");
       }
+    } on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> cadastrar(RegisterRequest request) async {
+    try {
+
+      var response = await _dio.post(
+        ApiRoutes.urlBase + ApiRoutes.cadastro,
+        data: request.toJson()
+      );
+    } on DioException catch (dioError) {
+        throw Exception(dioError.response!.data["message"]);
     } on Exception catch (e){
       throw Exception(e.toString());
     }
