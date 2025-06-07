@@ -37,17 +37,16 @@ class _LoginScreenState extends State<LoginScreen> {
     try{
       await loginBusiness.login(emailController.text, senhaController.text);
 
+      setState(() {
+        fazendoLogin = false;
+      });
 
-    }on UnauthorizedException catch(e){
-      showDialog(
-        context: context, 
-        builder: (BuildContext context){
-          return AlertDialogDefault(
-            message: e.message,
-            caminhoImagem: "assets/images/icones/erro.png",
-          );
-        });
+      Navigator.pushReplacementNamed(context, '/treinos-individuais');
+
     }on Exception catch(e){
+      setState(() {
+        fazendoLogin = false;
+      });
        showDialog(
         context: context, 
         builder: (BuildContext context){
@@ -58,11 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
     }
 
-    setState(() {
-      fazendoLogin = false;
-    });
-
-    Navigator.pushReplacementNamed(context, '/treinos-individuais');
+    
   
   } 
 

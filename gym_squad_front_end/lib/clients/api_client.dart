@@ -26,11 +26,14 @@ class ApiClient{
       return LoginResponse.fromJson(response.data);
 
     } on DioException catch (dioError) {
-      if(dioError.response!.statusCode == ApiCodesConstants.semAutorizacao){
-        throw UnauthorizedException(message: "Não foi possível fazer login com essas credenciais");
+      if(dioError.response != null){
+        if(dioError.response!.statusCode == ApiCodesConstants.semAutorizacao){
+          throw UnauthorizedException(message: "Não foi possível fazer login com essas credenciais");
+        }
+      }else{
+        throw Exception(dioError.message);
       }
-    } on Exception catch (e){
-      throw Exception(e.toString());
+      
     }
   }
 

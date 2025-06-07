@@ -58,7 +58,7 @@ namespace GymSquadBackEnd.Application.Services
 
             return UsuarioMapper.ToDto(entidadeSalva);
         }
-
+        
         public UsuarioDto? Update(int id, UsuarioForm form)
         {
             var entidadeBanco = _repository.GetById(id);

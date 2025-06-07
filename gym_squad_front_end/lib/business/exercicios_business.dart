@@ -32,7 +32,7 @@ class ExerciciosBusiness {
     //Aqui eu estou gravando os exercicios que vem da API no dispositivo
     //no momento da busca, mas o certo é colocar esse método no momento 
     //da tela de splash do dispositivo por exemplo
-    //await _gravarExerciciosNoDispositivo(exercicios,credenciais.id);
+    await _gravarExerciciosNoDispositivo(exercicios!,credenciais.id);
 
     return exercicios;
 

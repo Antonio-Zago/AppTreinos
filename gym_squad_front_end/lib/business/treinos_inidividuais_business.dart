@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:gym_squad_front_end/clients/api_client.dart';
+import 'package:gym_squad_front_end/data/treinos_SQLite_datasource.dart';
+import 'package:gym_squad_front_end/domain/entities/treino_entity.dart';
 import 'package:gym_squad_front_end/models/api/login_request.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/exercicio_iniciado_request.dart';
@@ -27,23 +30,60 @@ class TreinosInidividuaisBusiness {
 
     var treinosIndividuaisNoDispositivoJson = await _retornarTreinosDoDispositivo(credenciais.id);
 
-    if(treinosIndividuaisNoDispositivoJson != null){
-      usuarioTreinos = UsuarioTreinos.fromJson(treinosIndividuaisNoDispositivoJson);
-    }
-      
-    //Aqui é necessário para ver se tem diferença entre o gravado no celular
-    // e no banco de dados
-
     final temInternet = await Connectivity().checkConnectivity(); 
 
-    if(temInternet[0] != ConnectivityResult.none){
-      List<UsuarioTreinosResponse> usuarioTreinosResponse = await apiClient.getTreinosByUserId(credenciais.token,credenciais.id);      
-    
-      usuarioTreinos = UsuarioTreinos(usuarioTreinosResponse);
+    if(treinosIndividuaisNoDispositivoJson != null){
+      UsuarioTreinos? usuarioTreinosDispositivo = UsuarioTreinos.fromJson(treinosIndividuaisNoDispositivoJson);;
+
+      if(temInternet[0] != ConnectivityResult.none){
+
+        List<UsuarioTreinosResponse> usuarioTreinosBanco = await apiClient.getTreinosByUserId(credenciais.token,credenciais.id);   
+
+        for(var treinoDispositivo in usuarioTreinosDispositivo.treinos){
+
+          //Aqui vou atualizar sempre os treinos no banco de dados
+          //Caso alguma alteração tenha sido feita de forma offline
+          List<TreinoExerciciosRequest> treinosRequest = [];
+
+          for(var exercicio in treinoDispositivo.exercicios){
+            List<SerieRequest> seriesRequest = [];
+            for(var serie in exercicio.series){
+              SerieRequest serieRequest = SerieRequest(serie.repeticoes,serie.carga);
+
+              seriesRequest.add(serieRequest);
+            }
+            TreinoExerciciosRequest treinoExerciciosRequest = TreinoExerciciosRequest(exercicio.id!,seriesRequest,exercicio.foto,exercicio.nome);
+            treinosRequest.add(treinoExerciciosRequest);
+          }
+          
+          await postTreino(treinosRequest, treinoDispositivo.nomeTreino,treinoDispositivo.treinoId);
+        }
+
+        for(var usuarioTreinoBanco in usuarioTreinosBanco){
+          var treinoBanco = usuarioTreinosDispositivo.treinos.firstWhereOrNull((a) => a.treinoId == usuarioTreinoBanco.treinoId);
+
+          //Significa que foi apagado o registro do treino de forma offline
+          //Necessário apagar do banco de dados agora
+          if(treinoBanco == null){
+            await deleteTreino(usuarioTreinoBanco.treinoId);
+          }
+        }
+        var treinosIndividuaisNoDispositivoJson = await _retornarTreinosDoDispositivo(credenciais.id);
+        usuarioTreinos = UsuarioTreinos.fromJson(treinosIndividuaisNoDispositivoJson!);
+      }else{
+        usuarioTreinos = usuarioTreinosDispositivo;
+      }
     }
-
+    else{
+      if(temInternet[0] != ConnectivityResult.none){
+        List<UsuarioTreinosResponse> usuarioTreinosResponse = await apiClient.getTreinosByUserId(credenciais.token,credenciais.id);      
+        usuarioTreinos = UsuarioTreinos(usuarioTreinosResponse);
+      }else{
+        return null;
+      }
+    }
+      
     return usuarioTreinos;
-
   }
 
   Future<UsuarioTreinosResponse?> getTreinosByUserIdAndTreinoId(int treinoId) async{
@@ -129,6 +169,10 @@ class TreinosInidividuaisBusiness {
   Future<void> postTreino(List<TreinoExerciciosRequest> exercicios, String nomeTreino, int? treinoId) async{
 
     var credenciais = await _retornarCredenciais();
+
+    TreinoEntity treino = TreinoEntity(nome: nomeTreino);
+
+    await TreinosSqliteDatasource().create(treino);
     
     UsuarioTreinosRequest request = UsuarioTreinosRequest(credenciais.id,nomeTreino, exercicios, treinoId);
 
@@ -162,11 +206,12 @@ class TreinosInidividuaisBusiness {
        if(treinosDispositivo != null){
         usuarioTreinos = UsuarioTreinos.fromJson(treinosDispositivo);
         bool encontrouTreino = false;
-        //Fazer lógica se tiver o mesmo Usuarioid e treino Id só da update no registro
+        //Fazer lógica se tiver o mesmo Usuarioid, treino Id e nome só da update no registro
         for(var treino in usuarioTreinos.treinos){
-          if(treino.treinoId == treinoId && treino.usuarioId == credenciais.id){
+          if(treino.treinoId == treinoId && treino.nomeTreino == nomeTreino && treino.usuarioId == credenciais.id){
             treino.exercicios = novoTreinoResponse.exercicios;
             treino.nomeTreino = novoTreinoResponse.nomeTreino;
+            treino.treinoId = novoTreinoResponse.treinoId;
             encontrouTreino = true;
           }
         }
@@ -197,7 +242,7 @@ class TreinosInidividuaisBusiness {
           seriesNovas.add(serieNova);
         }
 
-        TreinoExerciciosResponse exercicioNovo = TreinoExerciciosResponse(null, exercicio.foto,exercicio.nome!,seriesNovas);
+        TreinoExerciciosResponse exercicioNovo = TreinoExerciciosResponse(exercicio.exercicioId, exercicio.foto,exercicio.nome!,seriesNovas);
         exerciciosNovo.add(exercicioNovo);
       }
 
@@ -210,7 +255,7 @@ class TreinosInidividuaisBusiness {
         bool encontrouTreino = false;
         //Fazer lógica se tiver o mesmo Usuarioid e treino Id só da update no registro
         for(var treino in usuarioTreinos.treinos){
-          if(treino.treinoId == treinoId && treino.usuarioId == credenciais.id){
+          if(treino.treinoId == treinoId && treino.nomeTreino == nomeTreino && treino.usuarioId == credenciais.id){
             treino.exercicios = exerciciosNovo;
             treino.nomeTreino = nomeTreino;
             encontrouTreino = true;

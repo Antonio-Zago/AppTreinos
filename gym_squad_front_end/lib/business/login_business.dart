@@ -10,11 +10,15 @@ class LoginBusiness {
 
   Future<void> login(String email, String senha) async{
 
-    LoginRequest loginRequest = LoginRequest(email, senha);
+    try{
+      LoginRequest loginRequest = LoginRequest(email, senha);
 
-    LoginResponse? loginResponse = await apiClient.login(loginRequest.toJson());      
+      LoginResponse? loginResponse = await apiClient.login(loginRequest.toJson());      
 
-    await _salvarCredenciais(loginResponse);
+      await _salvarCredenciais(loginResponse);
+    }on Exception catch(e){
+      throw Exception(e.toString());
+    }
 
   }
 

@@ -35,7 +35,7 @@ class _TreinoIndividualEditScreenState
   bool carregando = false;
   List<TreinoExerciciosRequest> exercicios = [];
 
-  Future _mostrarDialogo(BuildContext context, int treinoId, List<TreinoExerciciosRequest> exercicios, String nomeTreino) async {
+  Future _mostrarDialogo(BuildContext context, int? treinoId, List<TreinoExerciciosRequest> exercicios, String nomeTreino) async {
 
     setState(() {
       carregando = true;
@@ -73,7 +73,7 @@ class _TreinoIndividualEditScreenState
     );
   }
 
-  Future _salvarTreino(int treinoId, List<TreinoExerciciosRequest> exercicios, String nomeTreino) async {
+  Future _salvarTreino(int? treinoId, List<TreinoExerciciosRequest> exercicios, String nomeTreino) async {
 
     await treinosInidividuaisBusiness.postTreino(exercicios, nomeTreino, treinoId);
 
