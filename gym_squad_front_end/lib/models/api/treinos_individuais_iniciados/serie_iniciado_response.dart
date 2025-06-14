@@ -7,7 +7,7 @@ part 'serie_iniciado_response.g.dart';
 class SerieIniciadoResponse{
   SerieIniciadoResponse(this.repeticoes, this.carga, this.id);
 
-  final int id;
+  final int? id;
   final int repeticoes;
   final double carga;
 

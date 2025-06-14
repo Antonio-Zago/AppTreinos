@@ -11,7 +11,7 @@ SerieIniciadoResponse _$SerieIniciadoResponseFromJson(
     SerieIniciadoResponse(
       (json['repeticoes'] as num).toInt(),
       (json['carga'] as num).toDouble(),
-      (json['id'] as num).toInt(),
+      (json['id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$SerieIniciadoResponseToJson(

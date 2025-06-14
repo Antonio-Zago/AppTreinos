@@ -15,7 +15,7 @@ TreinoIniciadoResponse _$TreinoIniciadoResponseFromJson(
           .map((e) =>
               ExercicioIniciadoResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
-      (json['id'] as num).toInt(),
+      (json['id'] as num?)?.toInt(),
       DateTime.parse(json['dataAtual'] as String),
     );
 

@@ -10,7 +10,7 @@ part 'treino_iniciado_response.g.dart';
 class TreinoIniciadoResponse{
   TreinoIniciadoResponse(this.usuarioId, this.treinoId, this.exercicios, this.id, this.dataAtual);
 
-  final int id;
+  final int? id;
   final int usuarioId;
   final int treinoId;
   final DateTime dataAtual;
