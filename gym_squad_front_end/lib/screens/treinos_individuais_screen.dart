@@ -29,7 +29,7 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
   Color? corLinha;
 
   Future<void> _atribuirTreinosUsuario() async {
-    treinos = await treinosInidividuaisBusiness.getTreinosByUserId();
+    treinos = await treinosInidividuaisBusiness.getAndUpdateTreinosByUserId();
 
     setState(() {
       _carregouTreinos = true;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/business/exercicios_business.dart';
 import 'package:gym_squad_front_end/business/treinos_inidividuais_business.dart';
@@ -85,6 +86,22 @@ class _NovoTreinoScreenState extends State<NovoTreinoScreen> {
         }   
       }
     }
+
+    var treinoUsuario = await treinosInidividuaisBusiness.getAndUpdateTreinosByUserId();
+
+    //Verifica se não existe o treino cadastrado com o mesmo nome
+    if(treinoUsuario != null){
+      var treinoBanco = treinoUsuario.treinos.firstWhereOrNull((a) => a.nomeTreino == nomeController.text);
+
+      if(treinoBanco != null){
+        await _mostrarDialogoErro("Já existe um treino com esse nome cadastrado");
+        setState(() {
+          carregando = false;
+        });
+        return;
+      }
+    }
+    
 
     await treinosInidividuaisBusiness.postTreinoNovo(
         exerciciosRequest, nomeController.text);

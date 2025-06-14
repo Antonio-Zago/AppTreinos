@@ -129,7 +129,7 @@ class _TreinoIndividualIniciadoScreenState
               ),
               TextButton(
                 onPressed: () async{
-                  await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId);
+                  await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId, false);
                   setState(() {
                     carregando = false;
                   });

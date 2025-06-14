@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/business/treinos_inidividuais_business.dart';
+import 'package:gym_squad_front_end/components/commum/alert_dialog_default.dart';
 import 'package:gym_squad_front_end/components/commum/app_bar_default.dart';
 import 'package:gym_squad_front_end/components/commum/background_completo_default.dart';
 import 'package:gym_squad_front_end/components/commum/button_default.dart';
@@ -34,6 +36,8 @@ class _TreinoIndividualEditScreenState
   Map<String, TextEditingController> listControllersCarga = {};
   bool carregando = false;
   List<TreinoExerciciosRequest> exercicios = [];
+  TextEditingController nomeController = TextEditingController();
+  String nomeOriginalTreino = "";
 
   Future _mostrarDialogo(BuildContext context, int? treinoId, List<TreinoExerciciosRequest> exercicios, String nomeTreino) async {
 
@@ -58,13 +62,6 @@ class _TreinoIndividualEditScreenState
             TextButton(
               onPressed: () async{
                 await _salvarTreino(treinoId, exercicios, nomeTreino);
-                setState(() {
-                  carregando = false;
-                });
-                Navigator.pushReplacementNamed(
-                                        context,
-                                        '/treinos-individuais',
-                                      );
               }, 
               child: Text('Sim')
             )
@@ -75,8 +72,41 @@ class _TreinoIndividualEditScreenState
 
   Future _salvarTreino(int? treinoId, List<TreinoExerciciosRequest> exercicios, String nomeTreino) async {
 
-    await treinosInidividuaisBusiness.postTreino(exercicios, nomeTreino, treinoId);
+    var treinoUsuario = await treinosInidividuaisBusiness.getAndUpdateTreinosByUserId();
 
+    //Verifica se não existe o treino cadastrado com o mesmo nome
+    if(treinoUsuario != null){
+      var treinoBanco = treinoUsuario.treinos.firstWhereOrNull((a) => (a.nomeTreino == nomeController.text) && (nomeOriginalTreino != nomeController.text));
+
+      if(treinoBanco != null){
+        await _mostrarDialogoErro("Já existe um treino com esse nome cadastrado");
+        setState(() {
+          carregando = false;
+        });
+        Navigator.pop(context);
+        return;
+      }
+    }
+
+    await treinosInidividuaisBusiness.postTreino(exercicios, nomeTreino, treinoId, true);
+
+    setState(() {
+      carregando = false;
+    });
+    Navigator.pushReplacementNamed(
+                                    context,
+                                    '/treinos-individuais',
+                                  );
+
+  }
+
+  Future _mostrarDialogoErro(String mensagem) async {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialogDefault(
+              message: mensagem,
+              caminhoImagem: "assets/images/icones/erro.png",
+            ));
   }
 
   void _selecionarExericio() async {
@@ -136,12 +166,15 @@ class _TreinoIndividualEditScreenState
     }
    
     final _formKey = GlobalKey<FormState>();
-    TextEditingController nomeController = TextEditingController();
-
-    nomeController.text = args["nomeTreino"];
-    var treinoId = args["treinoId"];
     
 
+    if(nomeController.text.isEmpty){
+      nomeController.text = args["nomeTreino"];
+      nomeOriginalTreino = args["nomeTreino"];
+    }
+    
+    var treinoId = args["treinoId"];
+    
     return Scaffold(
       appBar: AppBarDefault(
         title: args["nomeTreino"],

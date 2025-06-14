@@ -1,1 +1,0 @@
-const int DATABASE_VERSION = 1;

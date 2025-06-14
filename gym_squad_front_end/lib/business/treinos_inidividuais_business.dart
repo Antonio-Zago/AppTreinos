@@ -1,9 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:gym_squad_front_end/clients/api_client.dart';
-import 'package:gym_squad_front_end/data/treinos_SQLite_datasource.dart';
-import 'package:gym_squad_front_end/domain/entities/treino_entity.dart';
-import 'package:gym_squad_front_end/models/api/login_request.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/exercicio_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_request.dart';
@@ -22,7 +19,7 @@ class TreinosInidividuaisBusiness {
 
   ApiClient apiClient = ApiClient();
 
-  Future<UsuarioTreinos?> getTreinosByUserId() async{
+  Future<UsuarioTreinos?> getAndUpdateTreinosByUserId() async{
 
     UsuarioTreinos? usuarioTreinos;
 
@@ -33,7 +30,7 @@ class TreinosInidividuaisBusiness {
     final temInternet = await Connectivity().checkConnectivity(); 
 
     if(treinosIndividuaisNoDispositivoJson != null){
-      UsuarioTreinos? usuarioTreinosDispositivo = UsuarioTreinos.fromJson(treinosIndividuaisNoDispositivoJson);;
+      UsuarioTreinos? usuarioTreinosDispositivo = UsuarioTreinos.fromJson(treinosIndividuaisNoDispositivoJson);
 
       if(temInternet[0] != ConnectivityResult.none){
 
@@ -56,7 +53,7 @@ class TreinosInidividuaisBusiness {
             treinosRequest.add(treinoExerciciosRequest);
           }
           
-          await postTreino(treinosRequest, treinoDispositivo.nomeTreino,treinoDispositivo.treinoId);
+          await postTreino(treinosRequest, treinoDispositivo.nomeTreino,treinoDispositivo.treinoId, false);
         }
 
         for(var usuarioTreinoBanco in usuarioTreinosBanco){
@@ -163,16 +160,12 @@ class TreinosInidividuaisBusiness {
   }
 
   Future<void> postTreinoNovo(List<TreinoExerciciosRequest> exercicios, String nomeTreino) async{
-    await postTreino(exercicios, nomeTreino, null);
+    await postTreino(exercicios, nomeTreino, null, false);
   }
 
-  Future<void> postTreino(List<TreinoExerciciosRequest> exercicios, String nomeTreino, int? treinoId) async{
+  Future<void> postTreino(List<TreinoExerciciosRequest> exercicios, String nomeTreino, int? treinoId, bool isUpdate) async{
 
     var credenciais = await _retornarCredenciais();
-
-    TreinoEntity treino = TreinoEntity(nome: nomeTreino);
-
-    await TreinosSqliteDatasource().create(treino);
     
     UsuarioTreinosRequest request = UsuarioTreinosRequest(credenciais.id,nomeTreino, exercicios, treinoId);
 
@@ -208,7 +201,7 @@ class TreinosInidividuaisBusiness {
         bool encontrouTreino = false;
         //Fazer lógica se tiver o mesmo Usuarioid, treino Id e nome só da update no registro
         for(var treino in usuarioTreinos.treinos){
-          if(treino.treinoId == treinoId && treino.nomeTreino == nomeTreino && treino.usuarioId == credenciais.id){
+          if(treino.treinoId == treinoId && (treino.nomeTreino == nomeTreino || isUpdate) && treino.usuarioId == credenciais.id){ //Ao invés de usar o nome, criar um id proprio do registro salvo no dispoositivo
             treino.exercicios = novoTreinoResponse.exercicios;
             treino.nomeTreino = novoTreinoResponse.nomeTreino;
             treino.treinoId = novoTreinoResponse.treinoId;
@@ -255,7 +248,7 @@ class TreinosInidividuaisBusiness {
         bool encontrouTreino = false;
         //Fazer lógica se tiver o mesmo Usuarioid e treino Id só da update no registro
         for(var treino in usuarioTreinos.treinos){
-          if(treino.treinoId == treinoId && treino.nomeTreino == nomeTreino && treino.usuarioId == credenciais.id){
+          if(treino.treinoId == treinoId && (treino.nomeTreino == nomeTreino || isUpdate) && treino.usuarioId == credenciais.id){
             treino.exercicios = exerciciosNovo;
             treino.nomeTreino = nomeTreino;
             encontrouTreino = true;
