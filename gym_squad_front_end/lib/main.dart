@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gym_squad_front_end/screens/home_screen.dart';
 import 'package:gym_squad_front_end/screens/login_screen.dart';
 import 'package:gym_squad_front_end/screens/novo_treino_screen.dart';
 import 'package:gym_squad_front_end/screens/register_screen.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         '/novo-treino' :(context) => NovoTreinoScreen(),
         '/add-exercicio' :(context) => SelecaoExercicioScreen(),
         '/registro-usuario' :(context) => RegisterScreen(),
+        '/home' :(context) => HomeScreen()
       },
       debugShowCheckedModeBanner: false,
     );

@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
         fazendoLogin = false;
       });
 
-      Navigator.pushReplacementNamed(context, '/treinos-individuais');
+      Navigator.pushReplacementNamed(context, '/home');
 
     }on Exception catch(e){
       setState(() {

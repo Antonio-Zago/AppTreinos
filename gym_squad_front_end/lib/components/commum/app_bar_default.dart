@@ -27,8 +27,7 @@ class _AppBarDefaultState extends State<AppBarDefault> {
           fontSize: 20,
           fontWeight: FontWeight.bold
         ),
-      )
-
+      ),
     );
   }
 }

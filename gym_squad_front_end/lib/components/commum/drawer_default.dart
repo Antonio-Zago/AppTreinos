@@ -12,6 +12,64 @@ class _DrawerDefaultState extends State<DrawerDefault> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Color(ColorConstants.fundoApp),
+      child: ListView(
+        children: [
+           UserAccountsDrawerHeader(
+            decoration: BoxDecoration(
+              color: Color(ColorConstants.drawerCardConta)
+            ),
+              accountName: Text("Macoratti"),
+              accountEmail: Text("macoratti@yahoo.com"),
+              currentAccountPicture: CircleAvatar(
+                radius: 30.0,
+                backgroundImage:AssetImage("assets/images/squad-home.png"),
+                backgroundColor: Colors.transparent,
+              ),
+            ),
+          ListTile(
+            title: Text(
+              "Grupos",
+              style: TextStyle(
+                color: Color(ColorConstants.brancoPadrao),
+                fontSize: 20
+              ),
+            ),
+            leading: Icon(
+              Icons.group,
+              color: Color(ColorConstants.brancoPadrao),
+            ),
+             trailing: Icon(Icons.arrow_forward),
+             onTap: (){
+              Navigator.pushNamed(
+                                      context,
+                                      '/home',
+                                    );
+             },
+          ),
+          ListTile(
+            title: Text(
+              "Treinos",
+              style: TextStyle(
+                color: Color(ColorConstants.brancoPadrao),
+                fontSize: 20
+              ),
+            ),
+            leading: Icon(
+              Icons.fitness_center,
+              color: Color(ColorConstants.brancoPadrao),
+            ),
+             trailing: Icon(Icons.arrow_forward),
+             onTap: (){
+               Navigator.pushNamed(
+                                      context,
+                                      '/treinos-individuais',
+                                    );
+             },
+          ),
+          
+        ],
+      )
     );
   }
 }
