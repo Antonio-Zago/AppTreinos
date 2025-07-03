@@ -17,5 +17,7 @@ namespace GymSquadBackEnd.Application.Dtos
         public bool EhAdmin { get; set; }
 
         public string Nome { get; set; }
+
+        public string NomeUsuario { get; set; }
     }
 }

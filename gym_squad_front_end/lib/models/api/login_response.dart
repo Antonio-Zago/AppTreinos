@@ -6,8 +6,8 @@ part 'login_response.g.dart';
 class LoginResponse{
   LoginResponse(this.token, this.refreshToken, this.expiration, this.usuario, this.email, this.id);
 
-  final String token;
-  final String refreshToken;
+  String token;
+  String refreshToken;
   final DateTime expiration;
   final String usuario;
   final String email;

@@ -87,8 +87,7 @@ namespace GymSquadBackEnd.API.Controllers
 
         [HttpPost]
         [Route("refresh-token")]
-        [Authorize(Policy = "USUARIOGERAL")]
-        public IActionResult RefreshToken(TokenForm tokenForm)
+        public IActionResult RefreshToken([FromBody] TokenForm tokenForm)
         {
 
             if (tokenForm is null)
@@ -129,7 +128,7 @@ namespace GymSquadBackEnd.API.Controllers
 
             return new ObjectResult(new
             {
-                accessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
+                token = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
                 refreshToken = newRefreshToken
             });
         }

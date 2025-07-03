@@ -9,10 +9,12 @@ namespace GymSquadBackEnd.Application.Interfaces
 {
     public interface IUsuarioGrupoService
     {
-        public IEnumerable<UsuarioGrupoDto> GetByUserId(int userId);
+        IEnumerable<UsuarioGrupoDto> GetByUserId(int userId);
 
-        public UsuarioGrupoDto Post(UsuarioGrupoForm form);
+        UsuarioGrupoDto Post(UsuarioGrupoForm form);
 
-        public void DeleteByGrupoIdAndUserId(int grupoId, int userId);
+        void DeleteByGrupoIdAndUserId(int grupoId, int userId);
+
+        IEnumerable<UsuarioGrupoDto> GetByGrupoId(int grupoId);
     }
 }

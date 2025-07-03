@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gym_squad_front_end/business/grupo_business.dart';
 import 'package:gym_squad_front_end/components/commum/app_bar_default.dart';
 import 'package:gym_squad_front_end/components/commum/background_completo_default.dart';
+import 'package:gym_squad_front_end/components/commum/circular_progress_indicator_default.dart';
 import 'package:gym_squad_front_end/components/commum/drawer_default.dart';
+import 'package:gym_squad_front_end/models/api/grupos/usuario_grupo_response.dart';
+import 'package:gym_squad_front_end/utils/color_constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,8 +15,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  GrupoBusiness grupoBusiness = GrupoBusiness();
+  List<UsuarioGrupoResponse> grupos = [];
+  bool carregouGrupos = true;
+
+  Future<List<UsuarioGrupoResponse>> _retornarGruposDoUsuario() async{
+
+    return await grupoBusiness.getGruposByUserId();
+
+  }
+
+  @override
+  void initState() {
+    
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        carregouGrupos = false;
+      });
+      var response = await _retornarGruposDoUsuario();
+      setState(() {
+        carregouGrupos = true;
+        grupos = response;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBarDefault(
         title: "GRUPOS ATUAIS",
@@ -20,9 +53,44 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: DrawerDefault(),
       body: BackgroundCompletoDefault(
         children: [
-          Image.asset(
-            "assets/images/squad-home.png",
-          ),
+          !carregouGrupos ?
+          CircularProgressIndicatorDefault() :
+
+          grupos.isEmpty ?
+             Image.asset(
+                "assets/images/squad-home.png",
+              )
+          :
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: grupos.length,
+            itemBuilder: (context,index){
+              return Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      color: Color(ColorConstants.linhasGrids),
+                      child: ListTile(
+                        title: Text(
+                          grupos[index].nome,
+                          style: TextStyle(
+                            color: Color(ColorConstants.brancoPadrao),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                        ),
+                        onTap: (){
+                          Navigator.pushNamed(
+                                        context,
+                                        '/grupo',
+                                        arguments: <String, dynamic>{
+                                          'grupo': grupos[index]
+                                        },
+                                      );
+                        },
+                      ),
+                    );
+            }
+          )
           
           
           

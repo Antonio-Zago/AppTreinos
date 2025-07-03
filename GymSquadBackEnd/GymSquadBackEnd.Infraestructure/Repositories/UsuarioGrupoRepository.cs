@@ -33,7 +33,7 @@ namespace GymSquadBackEnd.Infraestructure.Repositories
 
         public IEnumerable<UsuarioGrupo> GetByGroupId(int groupId)
         {
-            return _appDbContext.Usuarios_Grupos.Where(a => a.GrupoId == groupId).Include(a => a.Grupo);
+            return _appDbContext.Usuarios_Grupos.Where(a => a.GrupoId == groupId).Include(a => a.Grupo).Include(a => a.Usuario);
         }
 
         public IEnumerable<UsuarioGrupo> GetByUserId(int userId)

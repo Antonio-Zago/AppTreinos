@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gym_squad_front_end/screens/grupo_screen.dart';
 import 'package:gym_squad_front_end/screens/home_screen.dart';
+import 'package:gym_squad_front_end/screens/integrantes_screen.dart';
 import 'package:gym_squad_front_end/screens/login_screen.dart';
 import 'package:gym_squad_front_end/screens/novo_treino_screen.dart';
 import 'package:gym_squad_front_end/screens/register_screen.dart';
 import 'package:gym_squad_front_end/screens/selecao_exercicio_screen.dart';
+import 'package:gym_squad_front_end/screens/solicitacoes_screen.dart';
 import 'package:gym_squad_front_end/screens/treino_individual_edit_screen.dart';
 import 'package:gym_squad_front_end/screens/treino_individual_iniciado_screen.dart';
 import 'package:gym_squad_front_end/screens/treinos_individuais_screen.dart';
@@ -36,7 +39,10 @@ class MyApp extends StatelessWidget {
         '/novo-treino' :(context) => NovoTreinoScreen(),
         '/add-exercicio' :(context) => SelecaoExercicioScreen(),
         '/registro-usuario' :(context) => RegisterScreen(),
-        '/home' :(context) => HomeScreen()
+        '/home' :(context) => HomeScreen(),
+        '/grupo' :(context) => GrupoScreen(),
+        '/grupo-integrantes' :(context) => IntegrantesScreen(),
+        '/grupo-solicitacoes' :(context) => SolicitacoesScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

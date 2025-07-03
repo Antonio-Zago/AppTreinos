@@ -17,7 +17,8 @@ namespace GymSquadBackEnd.Application.Mappings
                 Nome = entidade.Grupo!= null ? entidade.Grupo.Nome : null,
                 GrupoId = entidade.GrupoId,
                 UsuarioId = entidade.UsuarioId,
-                EhAdmin = entidade.EhAdmin
+                EhAdmin = entidade.EhAdmin,
+                NomeUsuario = entidade.Usuario != null ? entidade.Usuario.NomeUsuario : null
             };
         }
 

@@ -17,7 +17,7 @@ class _DrawerDefaultState extends State<DrawerDefault> {
         children: [
            UserAccountsDrawerHeader(
             decoration: BoxDecoration(
-              color: Color(ColorConstants.drawerCardConta)
+              color: Color(ColorConstants.douradoPadrao)
             ),
               accountName: Text("Macoratti"),
               accountEmail: Text("macoratti@yahoo.com"),
@@ -36,7 +36,7 @@ class _DrawerDefaultState extends State<DrawerDefault> {
               ),
             ),
             leading: Icon(
-              Icons.group,
+              Icons.group_outlined,
               color: Color(ColorConstants.brancoPadrao),
             ),
              trailing: Icon(Icons.arrow_forward),

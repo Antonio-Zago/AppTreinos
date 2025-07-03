@@ -50,6 +50,16 @@ namespace GymSquadBackEnd.Application.Services
             }
         }
 
+        public IEnumerable<UsuarioGrupoDto> GetByGrupoId(int grupoId)
+        {
+            var entidades = _usuarioGrupoRepository.GetByGroupId(grupoId);
+
+            foreach (var entidade in entidades)
+            {
+                yield return UsuarioGrupoMapper.ToDto(entidade);
+            }
+        }
+
         public void DeleteByGrupoIdAndUserId(int grupoId, int userId)
         {
             var usuarioGrupo = _usuarioGrupoRepository.GetByUserIdAndGroupId(userId, grupoId);
@@ -59,26 +69,8 @@ namespace GymSquadBackEnd.Application.Services
                 throw new Exception($"Não encontrado ligação do grupo com o usuário");
             }
 
-            if (!usuarioGrupo.EhAdmin)
-            {
-                throw new Exception($"Usuário não é admin");
-            }
+            _usuarioGrupoRepository.Delete(usuarioGrupo);
 
-            var grupo = _grupoRepository.GetById(grupoId);
-
-            if (grupo == null)
-            {
-                throw new Exception($"Não encontrado grupo com id {grupoId}");
-            }
-
-            //Falta excluir o grupo
-
-            var usuariosGrupo = _usuarioGrupoRepository.GetByGroupId(grupoId);
-
-
-            _usuarioGrupoRepository.DeleteRange(usuariosGrupo.ToList());
-
-            _grupoRepository.Delete(grupo);
 
         }
     }

@@ -22,6 +22,20 @@ class LoginBusiness {
 
   }
 
+  Future<void> refreshToken() async{
+
+    var credenciais = await _retornarCredenciais();
+
+    var response = await apiClient.refreshToken(credenciais.token,credenciais.refreshToken);      
+
+    credenciais.token = response!["token"];
+    credenciais.refreshToken = response!["refreshToken"];
+
+    await _salvarCredenciais(credenciais);
+
+
+  }
+
   Future<void> cadastrar(String email, String senha, String nome) async{
 
     RegisterRequest registerRequest = RegisterRequest(email, senha,nome);
@@ -34,4 +48,9 @@ class LoginBusiness {
     await Store.salvarValor("Credenciais", loginResponse!.toJson());
   }
 
+  Future<LoginResponse>  _retornarCredenciais() async{
+    var credenciaisJson = await Store.retornarValor("Credenciais");
+
+    return LoginResponse.fromJson(credenciaisJson!);
+  }
 }

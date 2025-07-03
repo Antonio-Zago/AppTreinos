@@ -23,11 +23,6 @@ namespace GymSquadBackEnd.Infraestructure.Context
             modelBuilder.Entity<UsuarioGrupo>()
                .HasKey(ea => new { ea.UsuarioId, ea.GrupoId });  // Chave primária composta
 
-            modelBuilder.Entity<Solicitacoes>()
-               .HasKey(ea => new { ea.UsuarioId, ea.GrupoId });  // Chave primária composta
-
-            modelBuilder.Entity<GrupoTreino>()
-               .HasKey(ea => new { ea.TreinoId, ea.GrupoId });  // Chave primária composta
 
             base.OnModelCreating(modelBuilder);
         }
@@ -55,8 +50,6 @@ namespace GymSquadBackEnd.Infraestructure.Context
         public DbSet<Grupo> Grupos { get; set; }
 
         public DbSet<Solicitacoes> Solicitacoes { get; set; }
-
-        public DbSet<GrupoTreino> Grupos_Treinos { get; set; }
 
     }
 }

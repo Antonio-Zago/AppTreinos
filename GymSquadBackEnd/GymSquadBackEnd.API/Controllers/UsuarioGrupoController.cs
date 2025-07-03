@@ -26,6 +26,15 @@ namespace GymSquadBackEnd.API.Controllers
         }
 
         [Authorize]
+        [HttpGet("GetByGrupoId/{grupoId}")]
+        public ActionResult<List<UsuarioGrupoDto>> GetByGrupoId(int grupoId)
+        {
+            var dtos = _service.GetByGrupoId(grupoId);
+
+            return Ok(dtos);
+        }
+
+        [Authorize]
         [HttpPost]
         public ActionResult<List<UsuarioGrupoDto>> Post(UsuarioGrupoForm form)
         {
@@ -36,7 +45,7 @@ namespace GymSquadBackEnd.API.Controllers
 
         [Authorize]
         [HttpDelete("{userId}/{grupoId}")]
-        public ActionResult Post(int grupoId, int userId)
+        public ActionResult Post(int userId, int grupoId)
         {
             _service.DeleteByGrupoIdAndUserId(grupoId, userId);
 

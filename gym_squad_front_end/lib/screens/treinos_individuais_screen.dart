@@ -86,15 +86,19 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
 
   @override
   void initState() {
-    setState(() {
-      _carregouTreinos = false;
-    });
-
-    Future.delayed(Duration.zero, () async {
-      await _atribuirTreinosUsuario();
-    });
 
     super.initState();
+
+     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _carregouTreinos = false;
+      });
+      await _atribuirTreinosUsuario();
+      setState(() {
+        _carregouTreinos = true;
+      });
+    });
+    
   }
 
   @override
@@ -147,12 +151,12 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                                         },
                                       );
                                     },
-                                    icon: Icon(Icons.play_arrow_rounded),
+                                    icon: Icon(Icons.play_arrow_outlined),
                                     color: Color(ColorConstants.linhasGrids)),
                               ),
                               CircleAvatar(
                                   backgroundColor:
-                                      Color(ColorConstants.azulClaroPadrao),
+                                      Color(ColorConstants.douradoPadrao),
                                   child: IconButton(
                                       onPressed: () {
                                         Navigator.pushNamed(
@@ -168,19 +172,19 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                                         },
                                       );
                                       },
-                                      icon: Icon(Icons.edit),
+                                      icon: Icon(Icons.edit_outlined),
                                       color:
                                           Color(ColorConstants.linhasGrids))),
                               CircleAvatar(
                                   backgroundColor:
-                                      Color(ColorConstants.vermelhoPadrao),
+                                      Color(ColorConstants.douradoPadrao),
                                   child: IconButton(
                                       onPressed: () async{
                                         
 
                                         await _mostrarDialogoDeletarTreino(context,treinos!.treinos[index].treinoId);
                                       },
-                                      icon: Icon(Icons.delete),
+                                      icon: Icon(Icons.delete_outline),
                                       color:
                                           Color(ColorConstants.linhasGrids))),
                             ]),
@@ -198,7 +202,7 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                         onPressed: () {
                           Navigator.of(context).pushNamed('/novo-treino');
                         },
-                        icon: Icon(Icons.add),
+                        icon: Icon(Icons.add_outlined),
                         color:Color(ColorConstants.linhasGrids)
                       ),
                       radius: 25,

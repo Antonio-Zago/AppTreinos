@@ -70,7 +70,9 @@ namespace GymSquadBackEnd.CrossCutting.Ioc
             services.AddScoped<IUsuarioGrupoService, UsuarioGrupoService>();
             services.AddScoped<IUsuarioGrupoRepository, UsuarioGrupoRepository>();
             services.AddScoped<IGrupoRepository, GrupoRepository>();
-           
+            services.AddScoped<ISolicitacaoRepository, SolicitacaoRepository>();
+            services.AddScoped<ISolicitacaoService, SolicitacaoService>();
+
             return services;
         }
     }
