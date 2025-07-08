@@ -12,5 +12,9 @@ namespace GymSquadBackEnd.Application.Interfaces
         IEnumerable<SolicitacaoDto> GetByGrupoId(int grupoId);
 
         SolicitacaoDto Post(SolicitacaoForm form);
+
+        SolicitacaoDto AceitarSolicitacao(SolicitacaoForm form);
+
+        SolicitacaoDto RecusarSolicitacao(SolicitacaoForm form);
     }
 }

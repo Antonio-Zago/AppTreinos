@@ -14,6 +14,7 @@ UsuarioGrupoResponse _$UsuarioGrupoResponseFromJson(
       json['ehAdmin'] as bool,
       json['nome'] as String,
       json['nomeUsuario'] as String?,
+      (json['codigo'] as num).toInt(),
     );
 
 Map<String, dynamic> _$UsuarioGrupoResponseToJson(
@@ -24,4 +25,5 @@ Map<String, dynamic> _$UsuarioGrupoResponseToJson(
       'ehAdmin': instance.ehAdmin,
       'nome': instance.nome,
       'nomeUsuario': instance.nomeUsuario,
+      'codigo': instance.codigo,
     };

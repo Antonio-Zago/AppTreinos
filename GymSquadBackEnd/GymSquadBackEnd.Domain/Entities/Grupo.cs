@@ -14,5 +14,7 @@ namespace GymSquadBackEnd.Domain.Entities
         [Required]
         [StringLength(100)]
         public string Nome { get; set; }
+
+        public int Codigo { get; set; }
     }
 }

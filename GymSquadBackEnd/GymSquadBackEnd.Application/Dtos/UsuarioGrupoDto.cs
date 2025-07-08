@@ -19,5 +19,7 @@ namespace GymSquadBackEnd.Application.Dtos
         public string Nome { get; set; }
 
         public string NomeUsuario { get; set; }
+
+        public int? Codigo { get; set; }
     }
 }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace GymSquadBackEnd.Application.Dtos
 {
-    public class SolicitacaoForm
+    public class GrupoDto
     {
-        public int UsuarioId { get; set; }
+        public string Nome { get; set; }
 
-        public int CodigoGrupo { get; set; }
+        public int Codigo { get; set; }
     }
 }

@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBarDefault(
-        title: "GRUPOS ATUAIS",
+        title: "Grupos atuais",
       ),
       drawer: DrawerDefault(),
       body: BackgroundCompletoDefault(
@@ -90,8 +90,41 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
             }
-          )
-          
+          ),
+          Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 25, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsGeometry.only(right: 15),
+                        child: CircleAvatar(
+                          backgroundColor:Color(ColorConstants.douradoPadrao),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pushNamed('/grupo-busca');
+                            },
+                            icon: Icon(Icons.search_outlined),
+                            color:Color(ColorConstants.linhasGrids)
+                          ),
+                          radius: 25,
+                        ),
+                      ),
+                      CircleAvatar(
+                        backgroundColor:Color(ColorConstants.douradoPadrao),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/grupo-novo');
+                          },
+                          icon: Icon(Icons.add_outlined),
+                          color:Color(ColorConstants.linhasGrids)
+                        ),
+                        radius: 25,
+                      )
+                    ]
+                  ),
+                ),
+                
           
           
         ]

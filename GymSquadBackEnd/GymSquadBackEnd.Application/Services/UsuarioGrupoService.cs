@@ -17,27 +17,53 @@ namespace GymSquadBackEnd.Application.Services
 
         private readonly IGrupoRepository _grupoRepository;
 
-        public UsuarioGrupoService(IUsuarioGrupoRepository usuarioGrupoRepository, IGrupoRepository grupoRepository)
+        private readonly IUnitOfWork    _unitOfWork;
+
+        public UsuarioGrupoService(IUsuarioGrupoRepository usuarioGrupoRepository, IGrupoRepository grupoRepository, IUnitOfWork unitOfWork)
         {
             _usuarioGrupoRepository = usuarioGrupoRepository;
             _grupoRepository = grupoRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public UsuarioGrupoDto Post(UsuarioGrupoForm form)
         {
+            Random random = new Random();
+
             var entidade = new UsuarioGrupo();
 
             var grupo = new Grupo();
 
-            grupo.Nome = form.Nome;
+            UsuarioGrupoDto dto = new UsuarioGrupoDto();
 
-            entidade.Grupo = grupo;
-            entidade.UsuarioId = form.UsuarioId;
-            entidade.EhAdmin = true;
+            try
+            {
+                _unitOfWork.BeginTransaction();
 
-            var entidadeSalva = _usuarioGrupoRepository.Post(entidade);
+                grupo.Nome = form.Nome;
 
-            return UsuarioGrupoMapper.ToDto(entidadeSalva); ;
+                int codigo = _grupoRepository.RetornarMaiorCodigo() + 1;
+
+                grupo.Codigo = codigo;
+
+                entidade.Grupo = grupo;
+                entidade.UsuarioId = form.UsuarioId;
+                entidade.EhAdmin = true;
+
+                var entidadeSalva = _usuarioGrupoRepository.Post(entidade);
+
+                dto = UsuarioGrupoMapper.ToDto(entidadeSalva);
+
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Roolback();
+                throw new Exception("Ocorreu um erro na requisição");
+            }
+
+            return dto;
+            
         }
 
         public IEnumerable<UsuarioGrupoDto> GetByUserId(int userId)

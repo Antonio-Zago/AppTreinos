@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Sqids;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,9 @@ namespace GymSquadBackEnd.CrossCutting.Ioc
             services.AddScoped<IGrupoRepository, GrupoRepository>();
             services.AddScoped<ISolicitacaoRepository, SolicitacaoRepository>();
             services.AddScoped<ISolicitacaoService, SolicitacaoService>();
+            services.AddSingleton<SqidsEncoder<int>>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IGrupoService, GrupoService>();
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using GymSquadBackEnd.Application.Dtos;
 using GymSquadBackEnd.Domain.Entities;
+using Sqids;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace GymSquadBackEnd.Application.Mappings
     {
         public static SolicitacaoDto ToDto(Solicitacoes entidade)
         {
+
             return new SolicitacaoDto
             {
                 UsuarioId = entidade.UsuarioId,

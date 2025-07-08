@@ -20,13 +20,27 @@ namespace GymSquadBackEnd.Infraestructure.Repositories
         }
         public IEnumerable<Solicitacoes> GetByGroupId(int groupId)
         {
-            return _appDbContext.Solicitacoes.Where(a => a.GrupoId == groupId).Include(a => a.Grupo).Include(a => a.Usuario);
+            return _appDbContext.Solicitacoes.Where(a => a.GrupoId == groupId && a.Status == 1).Include(a => a.Grupo).Include(a => a.Usuario);
         }
 
+        public Solicitacoes GetByGroupIdAndUserId(int groupId, int usuarioId)
+        {
+            return _appDbContext.Solicitacoes.Where(a => a.GrupoId == groupId && a.UsuarioId == usuarioId && a.Status == 1).Include(a => a.Grupo).Include(a => a.Usuario).FirstOrDefault();
+        }
+
+       
         public void Post(Solicitacoes solicitacao)
         {
             _appDbContext.Solicitacoes.Add(solicitacao);
             _appDbContext.SaveChanges();
+        }
+
+        public Solicitacoes Update(Solicitacoes solicitacao)
+        {
+            _appDbContext.Entry(solicitacao).State = EntityState.Modified;
+            _appDbContext.SaveChanges();
+
+            return solicitacao;
         }
 
     }

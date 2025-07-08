@@ -3,10 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:gym_squad_front_end/clients/dio_client.dart';
 import 'package:gym_squad_front_end/exceptions/unauthorized_exception.dart';
 import 'package:gym_squad_front_end/models/api/exercicios/exercicio_response.dart';
+import 'package:gym_squad_front_end/models/api/grupos/grupo_request.dart';
+import 'package:gym_squad_front_end/models/api/grupos/grupo_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/solicitacoes_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/usuario_grupo_response.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
 import 'package:gym_squad_front_end/models/api/register_request.dart';
+import 'package:gym_squad_front_end/models/api/solicitacoes/aceitar_solicitacao_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_request.dart';
@@ -163,6 +166,45 @@ class ApiClient{
 
   }
 
+  Future<void> postGrupo(GrupoRequest request) async {
+
+      await _dio.dio.post(
+        ApiRoutes.usuarioGrupos,
+        data: request.toJson()
+      );
+
+  }
+
+  Future<void> aceitarSolicitacao(AceitarSolicitacaoRequest request) async {
+    try {
+
+      var response = await _dio.dio.post(
+        ApiRoutes.solicitacoesAceitar,
+        data: request.toJson()
+      );
+      
+    } on DioException catch (dioError) {
+        throw Exception(dioError.response!.data["message"]);
+    } on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> rejeitarSolicitacao(AceitarSolicitacaoRequest request) async {
+    try {
+
+      var response = await _dio.dio.put(
+        ApiRoutes.solicitacoesRecusar,
+        data: request.toJson()
+      );
+      
+    } on DioException catch (dioError) {
+        throw Exception(dioError.response!.data["message"]);
+    } on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
   Future<List<UsuarioGrupoResponse>> getGruposByUserId(String token, int idUsuario) async {
 
     List<UsuarioGrupoResponse> retorno = [];
@@ -183,6 +225,21 @@ class ApiClient{
       return retorno;
 
     }  on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> enviarSolicitacao(AceitarSolicitacaoRequest request) async {
+    try {
+
+      var response = await _dio.dio.post(
+        ApiRoutes.solicitacoesEnviar,
+        data: request.toJson()
+      );
+      
+    } on DioException catch (dioError) {
+        throw Exception(dioError.response!.data["message"]);
+    } on Exception catch (e){
       throw Exception(e.toString());
     }
   }
@@ -261,6 +318,30 @@ class ApiClient{
       return retorno;
 
     }  on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
+   Future<GrupoResponse> getGrupoByCodigo(int codigo) async {
+
+    try {
+
+      var response = await _dio.dio.get(
+        ApiRoutes.grupoGetByCodigo + codigo.toString()
+
+      );
+
+      var responseData = GrupoResponse.fromJson(response.data);
+
+      return responseData;
+
+    }  on DioException catch (dioError){
+      if(dioError.response != null){
+        throw Exception( dioError.response!.data["message"]);
+      }
+      throw Exception(dioError.message);
+      
+    } on Exception catch(e){
       throw Exception(e.toString());
     }
   }

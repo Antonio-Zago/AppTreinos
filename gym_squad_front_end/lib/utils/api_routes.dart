@@ -10,4 +10,8 @@ class ApiRoutes {
   static const String usuarioGrupos = "UsuarioGrupo/";
   static const String usuarioGruposGetByGrupoId = "UsuarioGrupo/GetByGrupoId/";
   static const String solicitacoesGetByGrupoId = "Solicitacoes/GetByGrupoId/";
+  static const String solicitacoesAceitar = "Solicitacoes/AceitarSolicitacao/";
+  static const String solicitacoesRecusar = "Solicitacoes/RecusarSolicitacao/";
+  static const String solicitacoesEnviar = "Solicitacoes";
+  static const String grupoGetByCodigo = "Grupo/";
 }

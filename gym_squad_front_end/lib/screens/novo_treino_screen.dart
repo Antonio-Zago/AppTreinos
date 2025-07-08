@@ -140,7 +140,7 @@ class _NovoTreinoScreenState extends State<NovoTreinoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDefault(
-        title: "NOVO TREINO",
+        title: "Novo treino",
       ),
       body: BackgroundCompletoDefault(children: [
         Form(

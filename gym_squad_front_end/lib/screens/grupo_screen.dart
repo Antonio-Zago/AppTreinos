@@ -43,24 +43,29 @@ class _GrupoScreenState extends State<GrupoScreen> {
                                         context,
                                         '/grupo-integrantes',
                                         arguments: <String, dynamic>{
+                                          'codigo': grupoSelecionado!.codigo,
                                           'grupoId': grupoSelecionado!.grupoId,
+                                          'ehAdmin' : grupoSelecionado!.ehAdmin
                                         },
                                       );
                   }, 
                   label: "Integrantes"
                 ),
+                grupoSelecionado!.ehAdmin ?
                 ButtonGroup(
                   funcao: (){
                     Navigator.pushNamed(
                                         context,
                                         '/grupo-solicitacoes',
                                         arguments: <String, dynamic>{
+                                          'codigo': grupoSelecionado!.codigo,
                                           'grupoId': grupoSelecionado!.grupoId,
                                         },
                                       );
                   }, 
                   label: "Solicitações"
-                )
+                ) :
+                Container()
               ],
             ),
           ),

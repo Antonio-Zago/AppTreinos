@@ -19,11 +19,17 @@ namespace GymSquadBackEnd.Application.Services
 
         private readonly IUsuarioRepository _repositoryUsuario;
 
-        public SolicitacaoService(ISolicitacaoRepository repository, IGrupoRepository repositoryGrupo, IUsuarioRepository repositoryUsuario)
+        private readonly IUsuarioGrupoRepository _repositoryUsuarioGrupo;
+
+        private readonly IUnitOfWork _unitOfwork;
+
+        public SolicitacaoService(ISolicitacaoRepository repository, IGrupoRepository repositoryGrupo, IUsuarioRepository repositoryUsuario, IUsuarioGrupoRepository repositoryUsuarioGrupo, IUnitOfWork unitOfwork)
         {
             _repository = repository;
             _repositoryGrupo = repositoryGrupo;
             _repositoryUsuario = repositoryUsuario;
+            _repositoryUsuarioGrupo = repositoryUsuarioGrupo;
+            _unitOfwork = unitOfwork;
         }
 
         public IEnumerable<SolicitacaoDto> GetByGrupoId(int grupoId)
@@ -38,17 +44,116 @@ namespace GymSquadBackEnd.Application.Services
 
         public SolicitacaoDto Post(SolicitacaoForm form)
         {
+
+            var grupo = _repositoryGrupo.GetByCodigo(form.CodigoGrupo);
+
+            if (grupo == null)
+            {
+                throw new Exception("Grupo não encontrado");
+            }
+
+            var grupoUsuario = _repositoryUsuarioGrupo.GetByUserIdAndGroupId(form.UsuarioId, grupo.Id);
+
+            if (grupoUsuario != null)
+            {
+                throw new Exception("Usuário já existe no grupo");
+            }
+
+            var solicitacao = _repository.GetByGroupIdAndUserId(grupo.Id, form.UsuarioId);
+
+            if (solicitacao != null)
+            {
+                throw new Exception("solicitação já cadastrada");
+            }
+
             var usuario = _repositoryUsuario.GetById(form.UsuarioId);
 
-            var solicitacao = new Solicitacoes();
-            solicitacao.GrupoId = form.GrupoId;
-            solicitacao.Usuario = usuario;
-            solicitacao.DataHora = DateTime.Now;
-            solicitacao.Status = 1;
+            if (usuario == null)
+            {
+                throw new Exception("Usuário não encontrado");
+            }
 
-            _repository.Post(solicitacao);
+            SolicitacaoDto dto = new SolicitacaoDto();
 
-            return SolicitacaoMapper.ToDto(solicitacao);
+            try
+            {
+                _unitOfwork.BeginTransaction();
+
+                solicitacao = new Solicitacoes();
+                solicitacao.GrupoId = grupo.Id;
+                solicitacao.Usuario = usuario;
+                solicitacao.DataHora = DateTime.Now;
+                solicitacao.Status = 1;
+
+                _repository.Post(solicitacao);
+
+                dto = SolicitacaoMapper.ToDto(solicitacao);
+
+                _unitOfwork.Commit();
+            }
+            catch
+            {
+                _unitOfwork.Roolback();
+            }
+            return dto;
+            
         }
+
+        public SolicitacaoDto AceitarSolicitacao(SolicitacaoForm form)
+        {
+            var grupo = _repositoryGrupo.GetByCodigo(form.CodigoGrupo);
+
+            if (grupo == null)
+            {
+                throw new Exception("Grupo não encontrado");
+            }
+
+            var solicitacao = _repository.GetByGroupIdAndUserId(grupo.Id, form.UsuarioId);
+
+            if (solicitacao == null)
+            {
+                throw new Exception("Não encontrado solicitação do usuário para o grupo");
+            }
+
+            solicitacao.Status = 2;
+
+            var usuarioGrupo = new UsuarioGrupo()
+            {
+                UsuarioId = form.UsuarioId,
+                GrupoId = grupo.Id,
+                EhAdmin = false
+            };
+
+            _repositoryUsuarioGrupo.Post(usuarioGrupo);
+
+            var solicitacaoSalva = _repository.Update(solicitacao);
+
+            return SolicitacaoMapper.ToDto(solicitacaoSalva);
+        }
+
+        public SolicitacaoDto RecusarSolicitacao(SolicitacaoForm form)
+        {
+            var grupo = _repositoryGrupo.GetByCodigo(form.CodigoGrupo);
+
+            if (grupo == null)
+            {
+                throw new Exception("Grupo não encontrado");
+            }
+
+            var solicitacao = _repository.GetByGroupIdAndUserId(grupo.Id, form.UsuarioId);
+
+            if (solicitacao == null)
+            {
+                throw new Exception("Não encontrado solicitação do usuário para o grupo");
+            }
+
+            solicitacao.Status = 3;
+
+            var solicitacaoSalva = _repository.Update(solicitacao);
+
+            return SolicitacaoMapper.ToDto(solicitacaoSalva);
+        }
+
+
     }
 }

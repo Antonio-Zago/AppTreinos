@@ -105,7 +105,7 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDefault(
-        title: "TREINO INDIVIDUAL",
+        title: "Treinos",
       ),
       drawer: DrawerDefault(),
       body: BackgroundCompletoDefault(

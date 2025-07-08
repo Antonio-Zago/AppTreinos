@@ -12,5 +12,9 @@ namespace GymSquadBackEnd.Domain.Interfaces
         IEnumerable<Solicitacoes> GetByGroupId(int groupId);
 
         void Post(Solicitacoes solicitacao);
+
+        Solicitacoes GetByGroupIdAndUserId(int groupId, int usuarioId);
+
+        Solicitacoes Update(Solicitacoes solicitacao);
     }
 }

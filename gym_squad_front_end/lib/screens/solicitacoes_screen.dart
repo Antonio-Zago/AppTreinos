@@ -4,6 +4,7 @@ import 'package:gym_squad_front_end/components/commum/alert_dialog_default.dart'
 import 'package:gym_squad_front_end/components/commum/app_bar_default.dart';
 import 'package:gym_squad_front_end/components/commum/background_completo_default.dart';
 import 'package:gym_squad_front_end/components/commum/circular_progress_indicator_default.dart';
+import 'package:gym_squad_front_end/components/commum/dialogo_default.dart';
 import 'package:gym_squad_front_end/models/api/grupos/solicitacoes_response.dart';
 import 'package:gym_squad_front_end/utils/color_constants.dart';
 
@@ -17,7 +18,8 @@ class SolicitacoesScreen extends StatefulWidget {
 class _SolicitacoesScreenState extends State<SolicitacoesScreen> {
 
   int? grupoId;
-  bool carregouGrupos = true;
+  int? codigo;
+  bool carregouSolicitacoes = true;
   GrupoBusiness grupoBusiness = GrupoBusiness();
   List<SolicitacoesResponse> solicitacoes = [];
 
@@ -27,10 +29,69 @@ class _SolicitacoesScreenState extends State<SolicitacoesScreen> {
 
   }
 
+  Future<void> _aceitarSolicitacao(int usuarioId) async{
+    try{
+      await grupoBusiness.aceitarSolicitacao(codigo!, usuarioId);
+    }
+    on Exception catch (e){
+      print(e);
+    }
+
+  }
+
+  Future<void> _rejeitarSolicitacao(int usuarioId) async{
+    try{
+      await grupoBusiness.rejeitarSolicitacao(codigo!, usuarioId);
+    }
+    on Exception catch (e){
+      print(e);
+    }
+
+  }
+
+   Future _mostrarDialogo(BuildContext context, int usuarioId, bool aceitarSolicitacao) async {
+
+    setState(() {
+      carregouSolicitacoes = false;
+    });
+
+    if(aceitarSolicitacao){
+      return showDialog(
+        context: context, 
+        builder: (context)=>DialogoDefault(
+          mensagem: "Deseja aceitar a solicitação?",
+          funcao: () async{
+            await _aceitarSolicitacao(usuarioId);
+            solicitacoes = await _retornarSolicitacoesGrupo();
+            setState(() {
+              carregouSolicitacoes = true;
+            });
+            
+          },
+        )
+      );
+    }
+    return showDialog(
+        context: context, 
+        builder: (context)=>DialogoDefault(
+          mensagem: "Deseja rejeitar a solicitação?",
+          funcao: () async{
+            await _rejeitarSolicitacao(usuarioId);
+            solicitacoes = await _retornarSolicitacoesGrupo();
+
+            setState(() {
+              carregouSolicitacoes = true;
+            });
+          },
+        )
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
 
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    codigo = args["codigo"];
     grupoId = args["grupoId"];
 
     return Scaffold(
@@ -39,7 +100,7 @@ class _SolicitacoesScreenState extends State<SolicitacoesScreen> {
       ),
       body:BackgroundCompletoDefault(
         children: [
-          !carregouGrupos ?
+          !carregouSolicitacoes ?
           CircularProgressIndicatorDefault() :
            ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
@@ -68,7 +129,7 @@ class _SolicitacoesScreenState extends State<SolicitacoesScreen> {
                                       Color(ColorConstants.douradoPadrao),
                                   child: IconButton(
                                       onPressed: () {
-                                        
+                                        _mostrarDialogo(context,solicitacoes[index].usuarioId, true);
                                       },
                                       icon: Icon(Icons.done_outline),
                                       color: Color(ColorConstants.linhasGrids)),
@@ -79,7 +140,7 @@ class _SolicitacoesScreenState extends State<SolicitacoesScreen> {
                                       Color(ColorConstants.douradoPadrao),
                                   child: IconButton(
                                       onPressed: () {
-                                        
+                                        _mostrarDialogo(context,solicitacoes[index].usuarioId, false);
                                       },
                                       icon: Icon(Icons.delete_outline),
                                       color: Color(ColorConstants.linhasGrids)),
@@ -103,19 +164,19 @@ class _SolicitacoesScreenState extends State<SolicitacoesScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       setState(() {
-        carregouGrupos = false;
+        carregouSolicitacoes = false;
       });
       try{
         var response = await _retornarSolicitacoesGrupo();
 
         setState(() {
-          carregouGrupos = true;
+          carregouSolicitacoes = true;
           solicitacoes = response;
         });
       }
       catch (e){
         setState(() {
-          carregouGrupos = true;
+          carregouSolicitacoes = true;
         });
         showDialog(
           context: context, 

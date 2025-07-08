@@ -33,5 +33,23 @@ namespace GymSquadBackEnd.API.Controllers
 
             return Ok(dto);
         }
+
+        [Authorize]
+        [HttpPost("AceitarSolicitacao")]
+        public ActionResult<SolicitacaoDto> AceitarSolicitacao(SolicitacaoForm form)
+        {
+            var dto = _service.AceitarSolicitacao(form);
+
+            return Ok(dto);
+        }
+
+        [Authorize]
+        [HttpPut("RecusarSolicitacao")]
+        public ActionResult<SolicitacaoDto> RecusarSolicitacao(SolicitacaoForm form)
+        {
+            var dto = _service.RecusarSolicitacao(form);
+
+            return Ok(dto);
+        }
     }
 }

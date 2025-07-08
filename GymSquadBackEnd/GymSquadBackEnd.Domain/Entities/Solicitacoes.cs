@@ -23,6 +23,11 @@ namespace GymSquadBackEnd.Domain.Entities
 
         public DateTime DataHora { get; set; }
 
+        /*
+         1 - cadastrada
+         2 - aceita
+         3 - recusada
+         */
         public int Status { get; set; }
     }
 }

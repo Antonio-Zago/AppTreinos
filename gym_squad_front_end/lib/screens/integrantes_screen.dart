@@ -21,6 +21,8 @@ class _IntegrantesScreenState extends State<IntegrantesScreen> {
   bool carregouGrupos = true;
   List<UsuarioGrupoResponse> usuarios = [];
   int? grupoId;
+  bool? ehAdmin;
+  int? usuarioId;
 
   Future<List<UsuarioGrupoResponse>> _retornarIntegrantesGrupo() async{
 
@@ -79,6 +81,7 @@ class _IntegrantesScreenState extends State<IntegrantesScreen> {
 
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     grupoId = args["grupoId"];
+    ehAdmin = args["ehAdmin"];
 
     return Scaffold(
       appBar: AppBarDefault(
@@ -105,7 +108,7 @@ class _IntegrantesScreenState extends State<IntegrantesScreen> {
                               fontSize: 30,
                               fontWeight: FontWeight.bold),
                         ),
-                      trailing: CircleAvatar(
+                      trailing: ehAdmin! ? CircleAvatar(
                                 radius: 20,
                                 backgroundColor:
                                     Color(ColorConstants.douradoPadrao),
@@ -115,7 +118,7 @@ class _IntegrantesScreenState extends State<IntegrantesScreen> {
                                     },
                                     icon: Icon(Icons.delete),
                                     color: Color(ColorConstants.linhasGrids)),
-                              ),
+                              ) : null,
                       
                       ),
                     );

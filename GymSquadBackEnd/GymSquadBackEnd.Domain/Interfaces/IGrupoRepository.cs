@@ -12,5 +12,9 @@ namespace GymSquadBackEnd.Domain.Interfaces
         Grupo GetById(int grupoId);
         void Delete(Grupo grupo);
 
+        Grupo GetByCodigo(int codigo);
+
+        int RetornarMaiorCodigo();
+
     }
 }
