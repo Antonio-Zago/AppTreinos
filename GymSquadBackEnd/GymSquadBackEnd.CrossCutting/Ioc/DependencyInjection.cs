@@ -76,6 +76,7 @@ namespace GymSquadBackEnd.CrossCutting.Ioc
             services.AddSingleton<SqidsEncoder<int>>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IGrupoService, GrupoService>();
+            services.AddTransient<IQueryRepository, QueryRepository>();
 
             return services;
         }

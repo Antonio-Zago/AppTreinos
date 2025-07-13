@@ -76,7 +76,16 @@ class _GrupoScreenState extends State<GrupoScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ButtonGroup(
-                  funcao: (){}, 
+                  funcao: (){
+                    Navigator.pushNamed(
+                                        context,
+                                        '/grupo-ranking',
+                                        arguments: <String, dynamic>{
+                                          'codigo': grupoSelecionado!.codigo,
+                                          'grupoId': grupoSelecionado!.grupoId,
+                                        },
+                                      );
+                  }, 
                   label: "Ranking"
                 ),
               ],

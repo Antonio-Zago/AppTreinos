@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/screens/grupo_busca_screen.dart';
 import 'package:gym_squad_front_end/screens/grupo_novo_screen.dart';
+import 'package:gym_squad_front_end/screens/grupo_ranking_screen.dart';
 import 'package:gym_squad_front_end/screens/grupo_screen.dart';
 import 'package:gym_squad_front_end/screens/home_screen.dart';
 import 'package:gym_squad_front_end/screens/integrantes_screen.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/grupo-solicitacoes' :(context) => SolicitacoesScreen(),
         '/grupo-novo' :(context) => GrupoNovoScreen(),
         '/grupo-busca' :(context) => GrupoBuscaScreen(),
+        '/grupo-ranking' :(context) => GrupoRankingScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

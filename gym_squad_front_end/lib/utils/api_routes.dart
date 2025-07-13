@@ -14,4 +14,5 @@ class ApiRoutes {
   static const String solicitacoesRecusar = "Solicitacoes/RecusarSolicitacao/";
   static const String solicitacoesEnviar = "Solicitacoes";
   static const String grupoGetByCodigo = "Grupo/";
+  static const String grupoRanking = "Grupo/ranking/";
 }

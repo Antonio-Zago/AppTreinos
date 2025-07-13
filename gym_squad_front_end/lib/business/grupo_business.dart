@@ -1,6 +1,7 @@
 import 'package:gym_squad_front_end/clients/api_client.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_request.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_response.dart';
+import 'package:gym_squad_front_end/models/api/grupos/ranking_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/solicitacoes_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/usuario_grupo_response.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
@@ -30,6 +31,32 @@ class GrupoBusiness {
   Future<List<SolicitacoesResponse>> getSolicitacoesByGrupoId(int grupoId) async{
 
     var grupos = await apiClient.getSolicitacoesByGrupoId(grupoId);
+
+    return grupos;
+  }
+
+  Future<List<RankingResponse>> getRankingByCodigoGrupo(int codigo, int index) async{
+
+    DateTime inicio;
+    DateTime fim;
+    var dataAtual = DateTime.now();
+
+    if(index == 0){ //Semana
+      var diaSemanaAtual = dataAtual.weekday;
+      inicio = dataAtual.add(Duration(days: - diaSemanaAtual));
+      fim = dataAtual;
+    }
+    else if(index == 1){ //Mês
+      
+      inicio = DateTime(dataAtual.year,dataAtual.month,1);
+      fim = dataAtual;
+    }
+    else{ //Sempre
+      inicio =  DateTime(2000, 1, 1);
+      fim = dataAtual;
+    }
+
+    var grupos = await apiClient.getRankingByCodigoGrupo(codigo, inicio, fim);
 
     return grupos;
   }

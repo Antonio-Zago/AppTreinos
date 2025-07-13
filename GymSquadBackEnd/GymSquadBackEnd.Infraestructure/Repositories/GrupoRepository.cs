@@ -40,5 +40,7 @@ namespace GymSquadBackEnd.Infraestructure.Repositories
         {
             return _appDbContext.Grupos.Max(g => (int?)g.Codigo) ?? 100;
         }
+
+
     }
 }

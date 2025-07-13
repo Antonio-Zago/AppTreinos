@@ -24,5 +24,14 @@ namespace GymSquadBackEnd.API.Controllers
 
             return Ok(dto);
         }
+
+        [Authorize]
+        [HttpGet("ranking/{codigo}")]
+        public ActionResult<List<GrupoRankingDto>> GetRankingGrupoByCodigo(int codigo, DateTime inicio, DateTime fim)
+        {
+            var dto = _service.GetRankingGrupoByCodigo(codigo, inicio,fim);
+
+            return Ok(dto);
+        }
     }
 }

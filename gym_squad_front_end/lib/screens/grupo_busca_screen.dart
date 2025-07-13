@@ -27,7 +27,7 @@ class _GrupoBuscaScreenState extends State<GrupoBuscaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDefault(
-        title: "BUSCAR GRUPO",
+        title: "Buscar grupo",
       ),
       body: BackgroundCompletoDefault(children: [
         Form(

@@ -10,5 +10,7 @@ namespace GymSquadBackEnd.Application.Interfaces
     public interface IGrupoService
     {
         GrupoDto GetByCodigo(int codigo);
+
+        List<GrupoRankingDto> GetRankingGrupoByCodigo(int codigo, DateTime inicio, DateTime fim);
     }
 }

@@ -5,6 +5,7 @@ import 'package:gym_squad_front_end/exceptions/unauthorized_exception.dart';
 import 'package:gym_squad_front_end/models/api/exercicios/exercicio_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_request.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_response.dart';
+import 'package:gym_squad_front_end/models/api/grupos/ranking_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/solicitacoes_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/usuario_grupo_response.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
@@ -147,6 +148,31 @@ class ApiClient{
 
       for(var data in responseData){
         SolicitacoesResponse solicitacao = SolicitacoesResponse.fromJson(data);
+        retorno.add(solicitacao);
+      }
+
+      return retorno;
+
+    }  on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<RankingResponse>> getRankingByCodigoGrupo(int codigo, DateTime inicio, DateTime fim) async {
+
+    List<RankingResponse> retorno = [];
+    try {
+
+      var response = await _dio.dio.get(
+        ApiRoutes.grupoRanking + codigo.toString(),
+        queryParameters: {'inicio': inicio,
+                          'fim' :fim}
+      );
+
+      var responseData = response.data;
+
+      for(var data in responseData){
+        RankingResponse solicitacao = RankingResponse.fromJson(data);
         retorno.add(solicitacao);
       }
 
