@@ -51,5 +51,7 @@ namespace GymSquadBackEnd.Infraestructure.Context
 
         public DbSet<Solicitacoes> Solicitacoes { get; set; }
 
+        public DbSet<Publicacao> Publicacoes { get; set; }
+
     }
 }

@@ -137,8 +137,8 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                                 backgroundColor:
                                     Color(ColorConstants.douradoPadrao),
                                 child: IconButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
+                                    onPressed: () async {
+                                      await Navigator.pushNamed(
                                         context,
                                         '/treino-individual-iniciado',
                                         arguments: <String, dynamic>{
@@ -150,6 +150,7 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                                               .treinos[index].treinoId,
                                         },
                                       );
+                                      await _atribuirTreinosUsuario();
                                     },
                                     icon: Icon(Icons.play_arrow_outlined),
                                     color: Color(ColorConstants.linhasGrids)),

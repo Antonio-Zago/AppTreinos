@@ -5,6 +5,9 @@ import 'package:gym_squad_front_end/exceptions/unauthorized_exception.dart';
 import 'package:gym_squad_front_end/models/api/exercicios/exercicio_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_request.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_response.dart';
+import 'package:gym_squad_front_end/models/api/grupos/publicacao_paginacao_response.dart';
+import 'package:gym_squad_front_end/models/api/grupos/publicacao_request.dart';
+import 'package:gym_squad_front_end/models/api/grupos/publicacao_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/ranking_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/solicitacoes_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/usuario_grupo_response.dart';
@@ -255,6 +258,32 @@ class ApiClient{
     }
   }
 
+  Future<PublicacaoPaginacaoResponse> getPublicacoesByGrupoId(int grupoId, int page) async {
+
+    try {
+
+      var response = await _dio.dio.get(
+        ApiRoutes.publicacao + grupoId.toString(),
+        queryParameters: {
+          "Page" : page,
+          "PageSized" : 10,
+          "OrderByProperty" : "DataHora",
+          "Desc" : true
+        }
+
+      );
+
+      var responseData = response.data;
+
+      PublicacaoPaginacaoResponse publicacao = PublicacaoPaginacaoResponse.fromJson(responseData);
+
+      return publicacao;
+
+    }  on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> enviarSolicitacao(AceitarSolicitacaoRequest request) async {
     try {
 
@@ -265,6 +294,25 @@ class ApiClient{
       
     } on DioException catch (dioError) {
         throw Exception(dioError.response!.data["message"]);
+    } on Exception catch (e){
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> postarPublicacao(PublicacaoRequest request) async {
+    try {
+
+      var response = await _dio.dio.post(
+        ApiRoutes.publicacao,
+        data: request.toJson()
+      );
+      
+    } on DioException catch (dioError) {
+        if(dioError.response != null){
+          throw Exception(dioError.response!.data["message"]);
+        }
+        throw Exception(dioError.message);
+        
     } on Exception catch (e){
       throw Exception(e.toString());
     }

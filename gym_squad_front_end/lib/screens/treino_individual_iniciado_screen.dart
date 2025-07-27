@@ -34,13 +34,54 @@ class _TreinoIndividualIniciadoScreenState
   String nomeTreino = "";
 
   Future _mostrarDialogo(BuildContext context, int treinoId, List<TreinoExerciciosResponse> exercicios) async {
+    
+    return showDialog(
+        context: context, 
+        barrierDismissible: false,
+        builder: (context){
 
-    setState(() {
-      carregando = true;
-    });
+          bool _desabilitado = false;
 
-    await _finalizarTreino(treinoId, exercicios);
+          return StatefulBuilder(
+             builder: (context, setStateDialog){
+              return AlertDialog(
+                title: Text('Deseja finalizar o treino?'),
+                content: _desabilitado
+                ? const SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : null,
+                actions: [
+                  TextButton(
+                    onPressed: _desabilitado ? null :(){
+                      setState(() {
+                        carregando = false;
+                      });
+                      setStateDialog(() => _desabilitado = true);
+                      Navigator.pop(context);
+                    }, 
+                    child:  Text('Não'),
+                  ),
+                  TextButton(
+                    onPressed: _desabilitado ? null : () async{
+                      setStateDialog(() => _desabilitado = true);
+                      await _finalizarTreino(treinoId, exercicios);
+                      if (!context.mounted) return;
+                    }, 
+                    child: Text('Sim'),
+                  )
+                ],
+                      );
+             }
+          );
+        }
+      );
+
+    
   }
+  
 
   Future _finalizarTreino(int treinoId, List<TreinoExerciciosResponse> exercicios) async {
 
@@ -108,47 +149,72 @@ class _TreinoIndividualIniciadoScreenState
 
       listaExerciciosRequest.add(treinoRequest);
     }
-
+        
     if(teveAlteracaoCargaReps){
-      return showDialog(
+      if (context.mounted) {
+        return showDialog(
         context: context, 
-        builder: (context)=>AlertDialog(
-            title: Text('Deseja salvar as alterações do treino?'),
-            actions: [
-              TextButton(
-                onPressed: (){
-                  setState(() {
-                    carregando = false;
-                  });
-                  Navigator.pushReplacementNamed(
-                                              context,
-                                                      '/treinos-individuais',
-                                                    );
-                }, 
-                child: Text('Não')
-              ),
-              TextButton(
-                onPressed: () async{
-                  await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId, false);
-                  setState(() {
-                    carregando = false;
-                  });
-                  Navigator.pushReplacementNamed(
-                                              context,
-                                                      '/treinos-individuais',
-                                                    );
-                }, 
-                child: Text('Sim')
-              )
-            ],
-        )
+        barrierDismissible: false,
+        builder: (context){
+
+          bool _desabilitado = false;
+
+          return StatefulBuilder(
+             builder: (context, setStateDialog){
+              return AlertDialog(
+                title: Text('Deseja salvar as alterações do treino?'),
+                content: _desabilitado
+                ? const SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : null,
+                actions: [
+                  TextButton(
+                    onPressed: _desabilitado ? null :(){
+                      setState(() {
+                        carregando = false;
+                      });
+                      setStateDialog(() => _desabilitado = true);
+                      Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                        '/treino-individual-iniciado-publicacao',
+                                                        ModalRoute.withName('/treinos-individuais'),
+                                                      );
+                    }, 
+                    child:  Text('Não'),
+                  ),
+                  TextButton(
+                    onPressed: _desabilitado ? null : () async{
+                      setStateDialog(() => _desabilitado = true);
+                      await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId, false);
+                      Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                        '/treino-individual-iniciado-publicacao',
+                                                        ModalRoute.withName('/treinos-individuais'),
+                                                      );
+                    }, 
+                    child: Text('Sim'),
+                  )
+                ],
+                      );
+             }
+          );
+        }
       );
+
+        
+      }
     }
     else{
-      setState(() {
-                    carregando = false;
-                  });
-                  Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                                      '/treino-individual-iniciado-publicacao',
+                                                      ModalRoute.withName('/treinos-individuais'),
+                                                    );
+      };
     }
   }
 
@@ -349,9 +415,19 @@ class _TreinoIndividualIniciadoScreenState
           carregando ?
           CircularProgressIndicator()
           :
-          ButtonDefault(funcao: (){
-            _mostrarDialogo(context,treinoId, exercicios, );
-          }, label: "Terminar treino")
+          ButtonDefault(funcao: () async{
+            setState(() {
+              carregando = true;
+            });
+
+            await _mostrarDialogo(context,treinoId, exercicios );
+
+            //if (!context.mounted) return;     
+
+            //await _mostrarDialogoPublicacao(context);
+
+          }, 
+          label: "Terminar treino")
         ]
         ),
       

@@ -13,6 +13,7 @@ import 'package:gym_squad_front_end/screens/register_screen.dart';
 import 'package:gym_squad_front_end/screens/selecao_exercicio_screen.dart';
 import 'package:gym_squad_front_end/screens/solicitacoes_screen.dart';
 import 'package:gym_squad_front_end/screens/treino_individual_edit_screen.dart';
+import 'package:gym_squad_front_end/screens/treino_individual_iniciado_publicacao_screen.dart';
 import 'package:gym_squad_front_end/screens/treino_individual_iniciado_screen.dart';
 import 'package:gym_squad_front_end/screens/treinos_individuais_screen.dart';
 
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/grupo-novo' :(context) => GrupoNovoScreen(),
         '/grupo-busca' :(context) => GrupoBuscaScreen(),
         '/grupo-ranking' :(context) => GrupoRankingScreen(),
+        '/treino-individual-iniciado-publicacao' :(context) => TreinoIndividualIniciadoPublicacaoScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

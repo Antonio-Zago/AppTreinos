@@ -45,7 +45,7 @@ namespace GymSquadBackEnd.API.Controllers
 
         [Authorize]
         [HttpDelete("{userId}/{grupoId}")]
-        public ActionResult Post(int userId, int grupoId)
+        public ActionResult Delete(int userId, int grupoId)
         {
             _service.DeleteByGrupoIdAndUserId(grupoId, userId);
 

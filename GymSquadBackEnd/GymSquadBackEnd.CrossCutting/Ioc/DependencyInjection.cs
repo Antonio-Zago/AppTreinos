@@ -77,6 +77,8 @@ namespace GymSquadBackEnd.CrossCutting.Ioc
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IGrupoService, GrupoService>();
             services.AddTransient<IQueryRepository, QueryRepository>();
+            services.AddScoped<IPublicacaoService, PublicacaoService>();
+            services.AddScoped<IPublicacaoRepository, PublicacaoRepository>();
 
             return services;
         }

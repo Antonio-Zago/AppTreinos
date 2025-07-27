@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/utils/color_constants.dart';
 
 class TextFieldDefault extends StatefulWidget {
-  const TextFieldDefault({super.key, required this.controller, required this.titulo, required this.validator, this.campoSenha, this.campoNumerico});
+  const TextFieldDefault({super.key, required this.controller, required this.titulo, required this.validator, this.campoSenha, this.campoNumerico, this.campoDescricao});
 
   final TextEditingController controller;
   final String titulo;
   final FormFieldValidator validator;
   final bool? campoSenha;
   final bool? campoNumerico;
+  final bool? campoDescricao;
 
   @override
   State<TextFieldDefault> createState() => _TextFieldDefaultState();
@@ -23,6 +24,7 @@ class _TextFieldDefaultState extends State<TextFieldDefault> {
 
     var campoSenhaWidget = widget.campoSenha ?? false;
     var campoNumericoWidget = widget.campoNumerico ?? false;
+    var campoDescricaoWidget = widget.campoDescricao ?? false;
 
     return Column(
       children: [
@@ -43,6 +45,7 @@ class _TextFieldDefaultState extends State<TextFieldDefault> {
         Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
           child: TextFormField(
+            maxLines: campoDescricaoWidget ? 4 : 1,
             keyboardType: campoNumericoWidget ? TextInputType.number : TextInputType.text,
             validator: widget.validator,
             controller: widget.controller,

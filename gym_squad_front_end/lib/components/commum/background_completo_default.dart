@@ -5,9 +5,10 @@ import 'package:gym_squad_front_end/components/commum/background_camada_3_defaul
 import 'package:gym_squad_front_end/components/commum/button_default.dart';
 
 class BackgroundCompletoDefault extends StatefulWidget {
-  const BackgroundCompletoDefault({super.key, required this.children});
+  BackgroundCompletoDefault({super.key, required this.children, this.scrollController});
 
   final List<Widget> children;
+  ScrollController? scrollController;
 
   @override
   State<BackgroundCompletoDefault> createState() => _BackgroundCompletoDefaultState();
@@ -21,6 +22,7 @@ class _BackgroundCompletoDefaultState extends State<BackgroundCompletoDefault> {
         BackgroundCamada1Default(),
         BackgroundCamada2Default(),
         BackgroundCamada3Default(
+          scrollController: widget.scrollController,
           children: widget.children,
         ),
       ]

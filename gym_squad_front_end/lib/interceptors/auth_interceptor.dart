@@ -23,10 +23,12 @@ class AuthInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     
      LoginBusiness loginBusiness = LoginBusiness();
-
-    if(err.response!.statusCode == 404){
-      loginBusiness.refreshToken();
+    if(err.response != null){
+      if(err.response!.statusCode == 404){
+        loginBusiness.refreshToken();
+      }
     }
+    
 
     super.onError(err, handler);
   }

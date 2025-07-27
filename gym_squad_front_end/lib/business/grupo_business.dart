@@ -1,6 +1,9 @@
 import 'package:gym_squad_front_end/clients/api_client.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_request.dart';
 import 'package:gym_squad_front_end/models/api/grupos/grupo_response.dart';
+import 'package:gym_squad_front_end/models/api/grupos/publicacao_paginacao_response.dart';
+import 'package:gym_squad_front_end/models/api/grupos/publicacao_request.dart';
+import 'package:gym_squad_front_end/models/api/grupos/publicacao_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/ranking_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/solicitacoes_response.dart';
 import 'package:gym_squad_front_end/models/api/grupos/usuario_grupo_response.dart';
@@ -20,12 +23,30 @@ class GrupoBusiness {
     return grupos;
   }
 
+  Future<void> postarPublicacoes(String titulo, String descricao, List<int> codigosGrupos) async{
+    var credenciais = await _retornarCredenciais();
+
+    for(var codigo in codigosGrupos){
+      PublicacaoRequest request = PublicacaoRequest(titulo, descricao,codigo,credenciais.id);
+
+      await apiClient.postarPublicacao(request);
+    }
+
+  }
+
   Future<List<UsuarioGrupoResponse>> getUsersByGrupoId(int grupoId) async{
     var credenciais = await _retornarCredenciais();
 
     var grupos = await apiClient.getUsersByGrupoId(credenciais.token, grupoId);
 
     return grupos;
+  }
+
+  Future<PublicacaoPaginacaoResponse> getPublicacoesByGrupoId(int grupoId, int page) async{
+
+    var publicacoes = await apiClient.getPublicacoesByGrupoId(grupoId, page);
+
+    return publicacoes;
   }
 
   Future<List<SolicitacoesResponse>> getSolicitacoesByGrupoId(int grupoId) async{
