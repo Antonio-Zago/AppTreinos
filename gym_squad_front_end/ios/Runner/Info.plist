@@ -47,5 +47,9 @@
 	<true/>
 	<key>FLTEnableImpeller</key>
 	<false />
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Descreva por que sua aplicação precisa acessar a biblioteca de fotos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Descreva por que sua aplicação precisa acessar a câmera</string>
 </dict>
 </plist>

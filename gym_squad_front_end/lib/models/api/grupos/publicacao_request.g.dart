@@ -12,6 +12,7 @@ PublicacaoRequest _$PublicacaoRequestFromJson(Map<String, dynamic> json) =>
       json['descricao'] as String,
       (json['codigoGrupo'] as num).toInt(),
       (json['usuarioId'] as num).toInt(),
+      json['foto'] as String,
     );
 
 Map<String, dynamic> _$PublicacaoRequestToJson(PublicacaoRequest instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$PublicacaoRequestToJson(PublicacaoRequest instance) =>
       'descricao': instance.descricao,
       'codigoGrupo': instance.codigoGrupo,
       'usuarioId': instance.usuarioId,
+      'foto': instance.foto,
     };

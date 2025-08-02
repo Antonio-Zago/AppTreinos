@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/utils/color_constants.dart';
 
 class TextFieldDefault extends StatefulWidget {
-  const TextFieldDefault({super.key, required this.controller, required this.titulo, required this.validator, this.campoSenha, this.campoNumerico, this.campoDescricao});
+  const TextFieldDefault({super.key, required this.controller, required this.titulo, this.validator, this.campoSenha, this.campoNumerico, this.campoDescricao});
 
   final TextEditingController controller;
   final String titulo;
-  final FormFieldValidator validator;
+  final FormFieldValidator? validator;
   final bool? campoSenha;
   final bool? campoNumerico;
   final bool? campoDescricao;

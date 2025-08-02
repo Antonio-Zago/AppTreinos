@@ -123,11 +123,27 @@ class _GrupoBuscaScreenState extends State<GrupoBuscaScreen> {
       carregando = true;
     });
     
-    await grupoBusiness.enviarSolicitacao(int.parse(codigoController.text));
+    try{
+      await grupoBusiness.enviarSolicitacao(int.parse(codigoController.text));
+    }on Exception catch (e){
+        showDialog(
+          context: context, 
+          builder: (BuildContext context){
+            return AlertDialogDefault(
+              message: e.toString(),
+              caminhoImagem: "assets/images/icones/erro.png",
+            );
+          });
 
-    setState(() {
-      carregando = false;
-    });
+          setState(() {
+            carregando = false;
+          });
+
+          return;
+      }
+    
+
+    
 
     await _mostrarDialogo();
 

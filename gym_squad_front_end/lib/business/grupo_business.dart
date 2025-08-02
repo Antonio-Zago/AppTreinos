@@ -23,11 +23,11 @@ class GrupoBusiness {
     return grupos;
   }
 
-  Future<void> postarPublicacoes(String titulo, String descricao, List<int> codigosGrupos) async{
+  Future<void> postarPublicacoes(String titulo, String descricao, List<int> codigosGrupos, String base64String) async{
     var credenciais = await _retornarCredenciais();
 
     for(var codigo in codigosGrupos){
-      PublicacaoRequest request = PublicacaoRequest(titulo, descricao,codigo,credenciais.id);
+      PublicacaoRequest request = PublicacaoRequest(titulo, descricao,codigo,credenciais.id, base64String);
 
       await apiClient.postarPublicacao(request);
     }

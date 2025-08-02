@@ -121,7 +121,7 @@ class _GrupoScreenState extends State<GrupoScreen> {
                     itemCount: publicacoes.dados.length ,
                     itemBuilder: (context, index) {
                       
-                      String dataFormatada = DateFormat("dd/MM/yyyy hh:mm").format(publicacoes.dados[index].dataHora);
+                      String dataFormatada = DateFormat("dd/MM/yyyy HH:mm").format(publicacoes.dados[index].dataHora);
 
                       Uint8List? bytes;
                       if(publicacoes.dados[index].foto != null && publicacoes.dados[index].foto != ""){

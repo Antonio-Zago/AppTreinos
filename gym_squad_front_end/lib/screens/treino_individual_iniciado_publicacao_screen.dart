@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/business/grupo_business.dart';
 import 'package:gym_squad_front_end/components/commum/alert_dialog_default.dart';
@@ -8,6 +12,7 @@ import 'package:gym_squad_front_end/components/commum/circular_progress_indicato
 import 'package:gym_squad_front_end/components/commum/text_field_default.dart';
 import 'package:gym_squad_front_end/models/api/grupos/usuario_grupo_response.dart';
 import 'package:gym_squad_front_end/utils/color_constants.dart';
+import 'package:image_picker/image_picker.dart';
 
 class TreinoIndividualIniciadoPublicacaoScreen extends StatefulWidget {
   const TreinoIndividualIniciadoPublicacaoScreen({super.key});
@@ -24,8 +29,14 @@ class _TreinoIndividualIniciadoPublicacaoScreenState extends State<TreinoIndivid
   TextEditingController tituloController = TextEditingController();
   TextEditingController descricaoController = TextEditingController();
   Map<String, bool> listGrupoSelecionadosController = {};
+  final ImagePicker imagePicker = ImagePicker();
+  File? imageFile;
+  final _formKey = GlobalKey<FormState>();
 
   Future<bool> _mostrarDialogoConfirmacao(BuildContext context) async {
+
+    
+
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
@@ -48,8 +59,6 @@ class _TreinoIndividualIniciadoPublicacaoScreenState extends State<TreinoIndivid
 
   @override
   Widget build(BuildContext context) {
-
-    final _formKey = GlobalKey<FormState>();
 
     return PopScope(
       canPop: false,
@@ -82,12 +91,42 @@ class _TreinoIndividualIniciadoPublicacaoScreenState extends State<TreinoIndivid
                       }
                     },
                   ),
-                  Text(
-                    "Selecione os grupos",
-                    style: TextStyle(
-                                          color: Color(ColorConstants.brancoPadrao),
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: ElevatedButton.icon(
+                      onPressed: (){
+                        _showOpcoesBottomSheet();
+                      }, 
+                      icon: Icon(Icons.photo_library),
+                      style: ElevatedButton.styleFrom(
+                        iconColor: Color(ColorConstants.brancoPadrao),
+                        backgroundColor: Color(ColorConstants.douradoPadrao),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      label: Text(
+                        "Selecione uma imagem",
+                        style: TextStyle(
+                          color: Color(ColorConstants.brancoPadrao)
+                        ),
+                      ),
+                    ),
+                  ),
+                  imageFile != null ?
+                  Image.file(imageFile!) : 
+                  Container(),
+
+                  Padding(
+                    padding: EdgeInsetsGeometry.only(top: 20),
+                    child: Text(
+                      "Selecione os grupos",
+                      style: TextStyle(
+                                            color: Color(ColorConstants.brancoPadrao),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                    ),
                   ),
       
                   ListView.builder(
@@ -137,11 +176,6 @@ class _TreinoIndividualIniciadoPublicacaoScreenState extends State<TreinoIndivid
                       campoDescricao: true,
                       controller: descricaoController,
                       titulo: "DESCRIÇÃO",
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Informe o titulo da publicação';
-                        }
-                      },
                     ),
                   ), 
                   ButtonDefault(funcao: () async{
@@ -156,6 +190,74 @@ class _TreinoIndividualIniciadoPublicacaoScreenState extends State<TreinoIndivid
           ]
         )
       ),
+    );
+  }
+
+  pick(ImageSource source) async{
+    var pickedFile = await imagePicker.pickImage(source: source);
+
+    if(pickedFile != null){
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+      
+    }
+  }
+
+   void _showOpcoesBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.grey[200],
+                  child: Center(
+                    child: Icon(
+                      Icons.photo_library,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ),
+                title: Text(
+                  'Galeria',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // Buscar imagem da galeria
+                  pick(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.grey[200],
+                  child: Center(
+                    child: Icon(
+                      Icons.photo_camera,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ),
+                title: Text(
+                  'Câmera',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // Fazer foto da câmera
+                  pick(ImageSource.camera);
+                },
+              ),
+              
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -213,6 +315,15 @@ class _TreinoIndividualIniciadoPublicacaoScreenState extends State<TreinoIndivid
       carregouGrupos = false;
     });
 
+    if (!_formKey.currentState!.validate()) {
+      setState(() {
+        carregouGrupos = true;
+      });
+      return;
+    } 
+
+
+
     List<int> listaCodigosGrupos = [];
 
     for(var grupo in grupos){
@@ -225,7 +336,20 @@ class _TreinoIndividualIniciadoPublicacaoScreenState extends State<TreinoIndivid
     }
     
     try{
-      await grupoBusiness.postarPublicacoes(tituloController.text, descricaoController.text, listaCodigosGrupos);
+      if(listaCodigosGrupos.isEmpty){
+        setState(() {
+          carregouGrupos = true;
+        });
+        throw  Exception("Necessário selecionar ao menos um grupo para publicar o treino");
+      }
+      String base64String = "";
+
+      if(imageFile != null){
+        Uint8List bytes = await imageFile!.readAsBytes();
+        base64String = base64.encode(bytes);
+      }
+      
+      await grupoBusiness.postarPublicacoes(tituloController.text, descricaoController.text, listaCodigosGrupos, base64String);
 
       setState(() {
         carregouGrupos = true;

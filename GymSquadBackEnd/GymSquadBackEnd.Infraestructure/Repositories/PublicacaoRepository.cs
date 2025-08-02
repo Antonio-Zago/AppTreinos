@@ -29,7 +29,7 @@ namespace GymSquadBackEnd.Infraestructure.Repositories
 
         public PagedBaseResponse<Publicacao> GetByCodigoGrupoPaged(int codigoGrupo, PagedBaseRequests request)
         {
-            var publicacoes = _appDbContext.Publicacoes.Include(a => a.Usuario).AsQueryable();
+            var publicacoes = _appDbContext.Publicacoes.Include(a => a.Usuario).Where(a => a.Grupo.Codigo == codigoGrupo).AsQueryable();
 
             return PagedBaseResponseHelper.GetResponse<PagedBaseResponse<Publicacao>, Publicacao>(publicacoes, request);
         }
