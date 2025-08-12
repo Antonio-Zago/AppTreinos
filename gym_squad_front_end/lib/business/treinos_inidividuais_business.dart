@@ -4,6 +4,7 @@ import 'package:gym_squad_front_end/clients/api_client.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/exercicio_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/exercicio_iniciado_response.dart';
+import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/serie_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/serie_iniciado_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_individuais_iniciados/treino_iniciado_response.dart';
@@ -13,6 +14,9 @@ import 'package:gym_squad_front_end/models/api/treinos_inidividuais/treino_exerc
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/treino_exercicios_response.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_request.dart';
 import 'package:gym_squad_front_end/models/api/treinos_inidividuais/usuario_treinos_response.dart';
+import 'package:gym_squad_front_end/models/memoria/exercicio_finalizado.dart';
+import 'package:gym_squad_front_end/models/memoria/serie_finalizado.dart';
+import 'package:gym_squad_front_end/models/memoria/treino_finalizado.dart';
 import 'package:gym_squad_front_end/models/memoria/usuario_treinos.dart';
 import 'package:gym_squad_front_end/models/memoria/usuario_treinos_finalizados.dart';
 import 'package:gym_squad_front_end/store/store.dart';
@@ -77,6 +81,8 @@ class TreinosInidividuaisBusiness {
       if(temInternet[0] != ConnectivityResult.none){
         List<UsuarioTreinosResponse> usuarioTreinosResponse = await apiClient.getTreinosByUserId(credenciais.token,credenciais.id);      
         usuarioTreinos = UsuarioTreinos(usuarioTreinosResponse);
+
+        await _gravarTreinosNoDispositivo(usuarioTreinos, credenciais.id);
       }else{
         return null;
       }
@@ -108,7 +114,10 @@ class TreinosInidividuaisBusiness {
       usuarioTreinos = UsuarioTreinos(usuarioTreinosResponse);
     }
 
-    return usuarioTreinos!.treinos.firstWhere((treino) => treino.treinoId! == treinoId);
+    if(usuarioTreinos != null){
+      return usuarioTreinos.treinos.firstWhere((treino) => treino.treinoId! == treinoId);
+    }
+    return null;
 
   }
 
@@ -136,13 +145,91 @@ class TreinosInidividuaisBusiness {
     }
   }
 
-  Future<TreinoIniciadoResponse> postTreinoFinalizado(List<ExercicioIniciadoRequest> exercicios, int treinoId, String nomeTreino) async{
+  Future<UsuarioTreinosFinalizados?> retornarTreinosFinalizadoNoDispositivo() async{
+    var credenciais = await _retornarCredenciais();
+
+    var usuarioTreinosFinalizadosDispositivoJson = await _retornarTreinosFinalizadoNoDispositivo(credenciais.id);
+
+    if(usuarioTreinosFinalizadosDispositivoJson != null){
+      return UsuarioTreinosFinalizados.fromJson(usuarioTreinosFinalizadosDispositivoJson);
+    }
+
+    return null;
+  }
+
+  List<ExercicioFinalizado> _converterExerciciosResponseParaTreinoFinalizado(List<ExercicioIniciadoResponse> responseList){
+    List<ExercicioFinalizado> exerciciosFinalizados = [];
+
+    for(var response in responseList){
+      ExercicioFinalizado exercicioFinalizado = ExercicioFinalizado();
+
+      exercicioFinalizado.exercicioId = response.exercicioId;
+      exercicioFinalizado.exercicioNome = response.exercicioNome;
+
+      List<SerieFinalizado> seriesFinalizadas = [];
+
+      for(var serie in response.dadosTreinoExercicioSeries){
+        SerieFinalizado serieFinalizado = SerieFinalizado();
+        serieFinalizado.carga = serie.carga;
+        serieFinalizado.repeticoes = serie.repeticoes;
+        seriesFinalizadas.add(serieFinalizado);
+      }
+
+      exercicioFinalizado.dadosTreinoExercicioSeries = seriesFinalizadas;
+
+      exerciciosFinalizados.add(exercicioFinalizado);
+    }
+
+    return exerciciosFinalizados;
+  }
+
+  Future<void> sincronizarTreinosFinalizados() async{
+    final temInternet = await Connectivity().checkConnectivity(); 
+
+    if(temInternet[0] != ConnectivityResult.none){
+      var credenciais = await _retornarCredenciais();
+
+      var usuarioTreinosFinalizadosDispositivoJson = await _retornarTreinosFinalizadoNoDispositivo(credenciais.id);
+
+      UsuarioTreinosFinalizados? usuarioTreinosFinalizadosDispositivo;
+
+      if(usuarioTreinosFinalizadosDispositivoJson != null){
+         usuarioTreinosFinalizadosDispositivo = UsuarioTreinosFinalizados.fromJson(usuarioTreinosFinalizadosDispositivoJson);
+          for(var treino in usuarioTreinosFinalizadosDispositivo.treinos){
+            if(!treino.sincronizado!){
+              List<ExercicioIniciadoRequest> listaExerciciosRequest = [];
+
+              for(var exercicio in treino.exercicios!){
+                List<SerieIniciadoRequest> listaSeriesRequest = [];
+
+                for(var serie in exercicio.dadosTreinoExercicioSeries!){
+                  SerieIniciadoRequest serieIniciadaRequest = SerieIniciadoRequest(serie.repeticoes!,serie.carga!);
+                  listaSeriesRequest.add(serieIniciadaRequest);
+                }
+
+                ExercicioIniciadoRequest exercicioIniciadoRequest = ExercicioIniciadoRequest(exercicio.exercicioId!,listaSeriesRequest, exercicio.exercicioNome!);
+                listaExerciciosRequest.add(exercicioIniciadoRequest);
+              }
+              
+              TreinoIniciadoRequest request = TreinoIniciadoRequest(credenciais.id,treino.treinoId!, listaExerciciosRequest);
+
+              await apiClient.postTreinoFinalizado(request, credenciais.token);  
+
+              treino.sincronizado = true;
+            }
+          }
+          _gravarTreinosFinalizadoNoDispositivo(usuarioTreinosFinalizadosDispositivo, credenciais.id);
+      }
+    }
+  }
+
+  Future<TreinoFinalizado> postTreinoFinalizado(List<ExercicioIniciadoRequest> exercicios, int treinoId, String nomeTreino) async{
 
     var credenciais = await _retornarCredenciais();
       
     TreinoIniciadoRequest request = TreinoIniciadoRequest(credenciais.id,treinoId, exercicios);
 
-    TreinoIniciadoResponse treinoFinalizado;
+    TreinoFinalizado treinoFinalizado = TreinoFinalizado();
 
     final temInternet = await Connectivity().checkConnectivity(); 
 
@@ -151,7 +238,13 @@ class TreinosInidividuaisBusiness {
     UsuarioTreinosFinalizados? usuarioTreinosFinalizadosDispositivo;
 
     if(temInternet[0] != ConnectivityResult.none){
-      treinoFinalizado = await apiClient.postTreinoFinalizado(request, credenciais.token);   
+      var treinoFinalizadoResponse = await apiClient.postTreinoFinalizado(request, credenciais.token);   
+
+      treinoFinalizado.dataAtual = treinoFinalizadoResponse.dataAtual;
+      treinoFinalizado.nomeTreino = nomeTreino;
+      treinoFinalizado.treinoId = treinoFinalizadoResponse.treinoId;
+      treinoFinalizado.exercicios = _converterExerciciosResponseParaTreinoFinalizado(treinoFinalizadoResponse.exercicios);
+      treinoFinalizado.sincronizado = true;
 
       if(usuarioTreinosFinalizadosDispositivoJson == null){
         usuarioTreinosFinalizadosDispositivo = UsuarioTreinosFinalizados([], credenciais.id);
@@ -173,12 +266,17 @@ class TreinosInidividuaisBusiness {
           seriesIniciadaResponse.add(serieIniciadaResponse);
         }
 
-        var exercicioIniciadoResponse = ExercicioIniciadoResponse(exercicio.exercicioId, seriesIniciadaResponse);
+        var exercicioIniciadoResponse = ExercicioIniciadoResponse(exercicio.exercicioId, seriesIniciadaResponse, exercicio.exercicioNome);
 
         exerciciosIniciadoResponse.add(exercicioIniciadoResponse);
       }
 
-      treinoFinalizado = TreinoIniciadoResponse(request.usuarioId,request.treinoId,exerciciosIniciadoResponse,null,DateTime.now());
+      treinoFinalizado = TreinoFinalizado();
+      treinoFinalizado.dataAtual = DateTime.now();
+      treinoFinalizado.exercicios = _converterExerciciosResponseParaTreinoFinalizado(exerciciosIniciadoResponse);
+      treinoFinalizado.nomeTreino = nomeTreino;
+      treinoFinalizado.treinoId = treinoId;
+      treinoFinalizado.sincronizado = false;
 
       if(usuarioTreinosFinalizadosDispositivoJson == null){
         usuarioTreinosFinalizadosDispositivo = UsuarioTreinosFinalizados([], credenciais.id);

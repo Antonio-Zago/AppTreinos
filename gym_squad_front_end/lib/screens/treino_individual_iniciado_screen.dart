@@ -110,7 +110,7 @@ class _TreinoIndividualIniciadoScreenState
 
       }
 
-      var exercicioRequest = ExercicioIniciadoRequest(exercicioId!,List.from(seriesRequest));
+      var exercicioRequest = ExercicioIniciadoRequest(exercicioId!,List.from(seriesRequest), exercicio.nome);
 
       exerciciosRequest.add(exercicioRequest);
 
@@ -125,97 +125,109 @@ class _TreinoIndividualIniciadoScreenState
     
     List<TreinoExerciciosRequest> listaExerciciosRequest = [];
 
-    for(var exercicio in treinoFinalizado.exercicios){
+    if(treinoIniciadoDispositivo != null){
+      for(var exercicio in treinoFinalizado.exercicios!){
 
-      List<SerieRequest> listaSeriesRequest = [];
+        List<SerieRequest> listaSeriesRequest = [];
 
-      var exercicioIniciadoDispositivo = treinoIniciadoDispositivo!.exercicios.firstWhere((exercicioDispositivo)=> exercicioDispositivo.id! == exercicio.exercicioId);
+        var exercicioIniciadoDispositivo = treinoIniciadoDispositivo!.exercicios.firstWhere((exercicioDispositivo)=> exercicioDispositivo.id! == exercicio.exercicioId);
 
-      for(int i =0;i<exercicio.dadosTreinoExercicioSeries.length;i++){
+        for(int i =0;i<exercicio.dadosTreinoExercicioSeries!.length;i++){
 
-        var serieIniciadaRequest = exercicioIniciadoDispositivo.series[i];
+          var serieIniciadaRequest = exercicioIniciadoDispositivo.series[i];
 
-        if(!teveAlteracaoCargaReps){
-          teveAlteracaoCargaReps = serieIniciadaRequest.carga != exercicio.dadosTreinoExercicioSeries[i].carga ||
-                                 serieIniciadaRequest.repeticoes != exercicio.dadosTreinoExercicioSeries[i].repeticoes;
+          if(!teveAlteracaoCargaReps){
+            teveAlteracaoCargaReps = serieIniciadaRequest.carga != exercicio.dadosTreinoExercicioSeries![i].carga ||
+                                  serieIniciadaRequest.repeticoes != exercicio.dadosTreinoExercicioSeries![i].repeticoes;
+          }
+          
+          var serieRequest = SerieRequest(exercicio.dadosTreinoExercicioSeries![i].repeticoes!, exercicio.dadosTreinoExercicioSeries![i].carga!);
+
+          listaSeriesRequest.add(serieRequest);
         }
-        
-        var serieRequest = SerieRequest(exercicio.dadosTreinoExercicioSeries[i].repeticoes, exercicio.dadosTreinoExercicioSeries[i].carga);
 
-        listaSeriesRequest.add(serieRequest);
+        var treinoRequest= TreinoExerciciosRequest(exercicio.exercicioId!,listaSeriesRequest, null, null);
+
+        listaExerciciosRequest.add(treinoRequest);
       }
+          
+      if(teveAlteracaoCargaReps){
+        if (context.mounted) {
+          return showDialog(
+          context: context, 
+          barrierDismissible: false,
+          builder: (context){
 
-      var treinoRequest= TreinoExerciciosRequest(exercicio.exercicioId,listaSeriesRequest, null, null);
+            bool _desabilitado = false;
 
-      listaExerciciosRequest.add(treinoRequest);
-    }
-        
-    if(teveAlteracaoCargaReps){
-      if (context.mounted) {
-        return showDialog(
-        context: context, 
-        barrierDismissible: false,
-        builder: (context){
+            return StatefulBuilder(
+              builder: (context, setStateDialog){
+                return AlertDialog(
+                  title: Text('Deseja salvar as alterações do treino?'),
+                  content: _desabilitado
+                  ? const SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  : null,
+                  actions: [
+                    TextButton(
+                      onPressed: _desabilitado ? null :(){
+                        setState(() {
+                          carregando = false;
+                        });
+                        setStateDialog(() => _desabilitado = true);
+                        Navigator.pushNamedAndRemoveUntil(
+                                                  context,
+                                                          '/treino-individual-iniciado-publicacao',
+                                                          ModalRoute.withName('/treinos-individuais'),
+                                                        );
+                      }, 
+                      child:  Text('Não'),
+                    ),
+                    TextButton(
+                      onPressed: _desabilitado ? null : () async{
+                        setStateDialog(() => _desabilitado = true);
+                        await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId, false);
+                        Navigator.pushNamedAndRemoveUntil(
+                                                  context,
+                                                          '/treino-individual-iniciado-publicacao',
+                                                          ModalRoute.withName('/treinos-individuais'),
+                                                        );
+                      }, 
+                      child: Text('Sim'),
+                    )
+                  ],
+                        );
+              }
+            );
+          }
+        );
 
-          bool _desabilitado = false;
-
-          return StatefulBuilder(
-             builder: (context, setStateDialog){
-              return AlertDialog(
-                title: Text('Deseja salvar as alterações do treino?'),
-                content: _desabilitado
-                ? const SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                : null,
-                actions: [
-                  TextButton(
-                    onPressed: _desabilitado ? null :(){
-                      setState(() {
-                        carregando = false;
-                      });
-                      setStateDialog(() => _desabilitado = true);
-                      Navigator.pushNamedAndRemoveUntil(
-                                                context,
-                                                        '/treino-individual-iniciado-publicacao',
-                                                        ModalRoute.withName('/treinos-individuais'),
-                                                      );
-                    }, 
-                    child:  Text('Não'),
-                  ),
-                  TextButton(
-                    onPressed: _desabilitado ? null : () async{
-                      setStateDialog(() => _desabilitado = true);
-                      await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId, false);
-                      Navigator.pushNamedAndRemoveUntil(
-                                                context,
-                                                        '/treino-individual-iniciado-publicacao',
-                                                        ModalRoute.withName('/treinos-individuais'),
-                                                      );
-                    }, 
-                    child: Text('Sim'),
-                  )
-                ],
-                      );
-             }
-          );
+          
         }
-      );
-
-        
+      }
+      else{
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                        '/treino-individual-iniciado-publicacao',
+                                                        ModalRoute.withName('/treinos-individuais'),
+                                                      );
+        };
       }
     }
     else{
-      if (context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(
-                                              context,
-                                                      '/treino-individual-iniciado-publicacao',
-                                                      ModalRoute.withName('/treinos-individuais'),
-                                                    );
-      };
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                        '/treino-individual-iniciado-publicacao',
+                                                        ModalRoute.withName('/treinos-individuais'),
+                                                      );
+        };
     }
+    
   }
 
   _iniciarVariaveis(List<TreinoExerciciosResponse> exercicios) {
@@ -258,7 +270,6 @@ class _TreinoIndividualIniciadoScreenState
 
     List<TreinoExerciciosResponse> exercicios = args["exercicios"];
     var treinoId = args["treinoId"];
-    // Por causa disso que não atualiza
 
     if(listControllersReps.isEmpty ){
       _iniciarVariaveis(exercicios);
@@ -421,10 +432,6 @@ class _TreinoIndividualIniciadoScreenState
             });
 
             await _mostrarDialogo(context,treinoId, exercicios );
-
-            //if (!context.mounted) return;     
-
-            //await _mostrarDialogoPublicacao(context);
 
           }, 
           label: "Terminar treino")

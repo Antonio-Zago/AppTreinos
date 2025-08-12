@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:gym_squad_front_end/clients/api_client.dart';
 import 'package:gym_squad_front_end/models/api/login_request.dart';
 import 'package:gym_squad_front_end/models/api/login_response.dart';
@@ -24,15 +25,16 @@ class LoginBusiness {
 
   Future<void> refreshToken() async{
 
-    var credenciais = await _retornarCredenciais();
+    print("RefreshToken");
 
+    var credenciais = await _retornarCredenciais();
+    
     var response = await apiClient.refreshToken(credenciais.token,credenciais.refreshToken);      
 
     credenciais.token = response!["token"];
-    credenciais.refreshToken = response!["refreshToken"];
+    credenciais.refreshToken = response["refreshToken"];
 
     await _salvarCredenciais(credenciais);
-
 
   }
 

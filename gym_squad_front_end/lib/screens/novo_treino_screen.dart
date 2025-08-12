@@ -136,233 +136,271 @@ class _NovoTreinoScreenState extends State<NovoTreinoScreen> {
             ));
   }
 
+  Future<bool> _mostrarDialogoConfirmacao(BuildContext context) async {
+
+    
+
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Confirmação'),
+            content: const Text('Deseja realmente sair da tela? O treino atual não será salvo'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Sair'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarDefault(
-        title: "Novo treino",
-      ),
-      body: BackgroundCompletoDefault(children: [
-        Form(
-          key: _formKey,
-          child: Column(children: [
-            TextFieldDefault(
-              controller: nomeController,
-              titulo: "NOME",
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Informe o nome do treino';
-                }
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 15),
-              child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: exerciciosRequest.length,
-                  itemBuilder: (context, index) {
-                    final exercicio = exerciciosRequest[index];
-                    Uint8List? bytes;
-                    if (exercicio.foto != null && exercicio.foto != "") {
-                      bytes = base64Decode(exercicio.foto!);
-                    }
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
 
-                    return ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        spacing: 10, 
-                        children: [
-                          bytes != null
-                              ? Image.memory(
-                                  bytes,
-                                  width: 100,
-                                  height: 100,
-                                )
-                              : Container(),
-                          Text(
-                            exercicio.nome!,
-                            style: TextStyle(
-                                color: Color(ColorConstants.brancoPadrao),
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Padding(
-                                  padding: EdgeInsets.only(right: 20),
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Color(ColorConstants.vermelhoPadrao),
-                                      child: IconButton(
-                                          onPressed: (){
-                                            setState(() {
-                                                exerciciosRequest.removeAt(index);
-                                            });
-                                          },
-                                          icon: Icon(Icons.delete),
-                                          color:
-                                              Color(ColorConstants.linhasGrids))),
-                                ),
-                              ]
-                      ),
-                      subtitle: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          color: Color(0xff4D4D4D),
+        final confirmarSaida = await _mostrarDialogoConfirmacao(context);
+        if (confirmarSaida && context.mounted) {
+          Navigator.of(context).pop(result); // passa o valor original
+        }
+      },
+      child: Scaffold(
+        appBar: AppBarDefault(
+          title: "Novo treino",
+        ),
+        body: BackgroundCompletoDefault(children: [
+          Form(
+            key: _formKey,
+            child: Column(children: [
+              TextFieldDefault(
+                controller: nomeController,
+                titulo: "NOME",
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Informe o nome do treino';
+                  }
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 15),
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: exerciciosRequest.length,
+                    itemBuilder: (context, index) {
+                      final exercicio = exerciciosRequest[index];
+                      Uint8List? bytes;
+                      if (exercicio.foto != null && exercicio.foto != "") {
+                        bytes = base64Decode(exercicio.foto!);
+                      }
+      
+                      return ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          spacing: 10, 
+                          children: [
+                            bytes != null
+                                ? Image.memory(
+                                    bytes,
+                                    width: 100,
+                                    height: 100,
+                                  )
+                                : Container(),
+                            Text(
+                              exercicio.nome!,
+                              style: TextStyle(
+                                  color: Color(ColorConstants.brancoPadrao),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                                    padding: EdgeInsets.only(right: 20),
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            Color(ColorConstants.vermelhoPadrao),
+                                        child: IconButton(
+                                            onPressed: (){
+                                              setState(() {
+                                                  exerciciosRequest.removeAt(index);
+                                              });
+                                            },
+                                            icon: Icon(Icons.delete),
+                                            color:
+                                                Color(ColorConstants.linhasGrids))),
+                                  ),
+                                ]
                         ),
-                        child: Column(children: [
-                          ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: exerciciosRequest[index].series.length,
-                              itemBuilder: (context, indexSerie) {
-                                return ListTile(
-                                  title: Row(
-                                    spacing: 10,
-                                    children: [
-                                      Text(
+                        subtitle: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: Color(0xff4D4D4D),
+                          ),
+                          child: Column(children: [
+                            ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: exerciciosRequest[index].series.length,
+                                itemBuilder: (context, indexSerie) {
+                                  return ListTile(
+                                    title: Row(
+                                      spacing: 10,
+                                      children: [
+                                        Text(
+                                            style: TextStyle(
+                                                color: Color(
+                                                    ColorConstants.brancoPadrao),
+                                                fontWeight: FontWeight.bold),
+                                            "Reps"),
+                                        Expanded(
+                                          child: Container(
+                                            decoration: new BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: new Border.all(
+                                                color: Color(
+                                                    ColorConstants.brancoPadrao),
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: TextFormField(
+                                              validator: (value){
+                                                if (value!.isEmpty) {
+                                                  return 'Informe';
+                                                }
+                                              },
+                                              onChanged: (value) => {
+                                                if(value.isNotEmpty){
+                                                  exerciciosRequest[index]
+                                                    .series[indexSerie]
+                                                    .repeticoes = int.parse(value)
+                                                }
+                                                
+                                              },
+                                              controller: exerciciosRequest[index]
+                                                  .series[indexSerie]
+                                                  .controllerReps,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                              ),
+                                              keyboardType: TextInputType.number,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Color(ColorConstants
+                                                      .brancoPadrao),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          "Carga",
                                           style: TextStyle(
                                               color: Color(
                                                   ColorConstants.brancoPadrao),
                                               fontWeight: FontWeight.bold),
-                                          "Reps"),
-                                      Expanded(
-                                        child: Container(
-                                          decoration: new BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: new Border.all(
-                                              color: Color(
-                                                  ColorConstants.brancoPadrao),
-                                              width: 1.0,
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            decoration: new BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: new Border.all(
+                                                color: Color(
+                                                    ColorConstants.brancoPadrao),
+                                                width: 1.0,
+                                              ),
                                             ),
-                                          ),
-                                          child: TextFormField(
-                                            validator: (value){
-                                              if (value!.isEmpty) {
-                                                return 'Informe';
-                                              }
-                                            },
-                                            onChanged: (value) => {
-                                              exerciciosRequest[index]
+                                            child: TextFormField(
+                                              validator: (value){
+                                                if (value!.isEmpty) {
+                                                  return 'Informe';
+                                                }
+                                              },
+                                              onChanged: (value) => {
+                                                if(value.isNotEmpty){
+                                                  exerciciosRequest[index]
+                                                    .series[indexSerie]
+                                                    .carga = double.parse(value)
+                                                }
+                                                
+                                              },
+                                              controller: exerciciosRequest[index]
                                                   .series[indexSerie]
-                                                  .repeticoes = int.parse(value)
-                                            },
-                                            controller: exerciciosRequest[index]
-                                                .series[indexSerie]
-                                                .controllerReps,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
+                                                  .controllerCarga,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                              ),
+                                              keyboardType: TextInputType.number,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Color(ColorConstants
+                                                      .brancoPadrao),
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            keyboardType: TextInputType.number,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Color(ColorConstants
-                                                    .brancoPadrao),
-                                                fontWeight: FontWeight.bold),
                                           ),
                                         ),
-                                      ),
-                                      Text(
-                                        "Carga",
-                                        style: TextStyle(
-                                            color: Color(
-                                                ColorConstants.brancoPadrao),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          decoration: new BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: new Border.all(
-                                              color: Color(
-                                                  ColorConstants.brancoPadrao),
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          child: TextFormField(
-                                            validator: (value){
-                                              if (value!.isEmpty) {
-                                                return 'Informe';
-                                              }
-                                            },
-                                            onChanged: (value) => {
-                                              exerciciosRequest[index]
-                                                  .series[indexSerie]
-                                                  .carga = double.parse(value)
-                                            },
-                                            controller: exerciciosRequest[index]
-                                                .series[indexSerie]
-                                                .controllerCarga,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                            ),
-                                            keyboardType: TextInputType.number,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Color(ColorConstants
-                                                    .brancoPadrao),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                      CircleAvatar(
-                                  backgroundColor:
-                                      Color(ColorConstants.vermelhoPadrao),
-                                  child: IconButton(
-                                      onPressed: (){
-                                        setState(() {
-                                          exerciciosRequest[index].series.removeAt(indexSerie);
-                                        });
-                                      },
-                                      icon: Icon(Icons.delete),
-                                      color:
-                                          Color(ColorConstants.linhasGrids))),
-                                    ],
-                                  ),
-                                );
-                              }),
-                          ButtonDefault(
-                            funcao: () {
-                              _adicionarSerie(index);
-                            },
-                            label: "Adicionar série",
-                            cor: Color(ColorConstants.azulEscuroPadrao),
-                          )
-                        ]),
+                                        CircleAvatar(
+                                    backgroundColor:
+                                        Color(ColorConstants.vermelhoPadrao),
+                                    child: IconButton(
+                                        onPressed: (){
+                                          setState(() {
+                                            exerciciosRequest[index].series.removeAt(indexSerie);
+                                          });
+                                        },
+                                        icon: Icon(Icons.delete),
+                                        color:
+                                            Color(ColorConstants.linhasGrids))),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                            ButtonDefault(
+                              funcao: () {
+                                _adicionarSerie(index);
+                              },
+                              label: "Adicionar série",
+                              cor: Color(ColorConstants.azulEscuroPadrao),
+                            )
+                          ]),
+                        ),
+                      );
+                    }),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 15),
+                child: carregando
+                    ? CircularProgressIndicator()
+                    : ButtonDefault(
+                        funcao: () {
+                          _selecionarExericio();
+                        },
+                        label: "Adicionar exercício",
                       ),
-                      onTap: () {
-                        Navigator.pop(context, exercicio);
-                      },
-                    );
-                  }),
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 15),
-              child: carregando
+              ),
+              carregando
                   ? CircularProgressIndicator()
                   : ButtonDefault(
-                      funcao: () {
-                        _selecionarExericio();
+                      funcao: () async{
+                        await _salvarTreino();
                       },
-                      label: "Adicionar exercício",
+                      label: "Salvar treino",
+                      cor: Color(ColorConstants.verdeEscuroPadrao),
                     ),
-            ),
-            carregando
-                ? CircularProgressIndicator()
-                : ButtonDefault(
-                    funcao: () async{
-                      await _salvarTreino();
-                    },
-                    label: "Salvar treino",
-                    cor: Color(ColorConstants.verdeEscuroPadrao),
-                  ),
-          ]),
-        ),
-      ]),
+            ]),
+          ),
+        ]),
+      ),
     );
   }
 }

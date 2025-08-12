@@ -13,11 +13,13 @@ ExercicioIniciadoResponse _$ExercicioIniciadoResponseFromJson(
       (json['dadosTreinoExercicioSeries'] as List<dynamic>)
           .map((e) => SerieIniciadoResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['exercicioNome'] as String,
     );
 
 Map<String, dynamic> _$ExercicioIniciadoResponseToJson(
         ExercicioIniciadoResponse instance) =>
     <String, dynamic>{
       'exercicioId': instance.exercicioId,
+      'exercicioNome': instance.exercicioNome,
       'dadosTreinoExercicioSeries': instance.dadosTreinoExercicioSeries,
     };

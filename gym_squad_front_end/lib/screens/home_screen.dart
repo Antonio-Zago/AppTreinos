@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/business/grupo_business.dart';
+import 'package:gym_squad_front_end/components/commum/alert_dialog_default.dart';
 import 'package:gym_squad_front_end/components/commum/app_bar_default.dart';
 import 'package:gym_squad_front_end/components/commum/background_completo_default.dart';
 import 'package:gym_squad_front_end/components/commum/circular_progress_indicator_default.dart';
@@ -35,11 +36,26 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         carregouGrupos = false;
       });
-      var response = await _retornarGruposDoUsuario();
-      setState(() {
-        carregouGrupos = true;
-        grupos = response;
-      });
+      try{
+        var response = await _retornarGruposDoUsuario();
+        setState(() {
+          carregouGrupos = true;
+          grupos = response;
+        });
+      }catch (e){
+        setState(() {
+          carregouGrupos = true;
+        });
+        showDialog(
+          context: context, 
+          builder: (BuildContext context){
+            return AlertDialogDefault(
+              message: e.toString(),
+              caminhoImagem: "assets/images/icones/erro.png",
+            );
+          });
+      }
+      
     });
   }
 

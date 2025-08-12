@@ -7,9 +7,10 @@ part 'exercicio_iniciado_response.g.dart';
 
 @JsonSerializable()
 class ExercicioIniciadoResponse{
-  ExercicioIniciadoResponse(this.exercicioId, this.dadosTreinoExercicioSeries);
+  ExercicioIniciadoResponse(this.exercicioId, this.dadosTreinoExercicioSeries, this.exercicioNome);
 
   final int exercicioId;
+  final String exercicioNome;
   final List<SerieIniciadoResponse> dadosTreinoExercicioSeries;
 
   factory ExercicioIniciadoResponse.fromJson(Map<String, dynamic> json) => _$ExercicioIniciadoResponseFromJson(json);

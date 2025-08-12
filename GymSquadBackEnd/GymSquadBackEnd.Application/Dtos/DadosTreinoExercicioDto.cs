@@ -12,6 +12,8 @@ namespace GymSquadBackEnd.Application.Dtos
 
         public int ExercicioId { get; set; }
 
+        public string ExercicioNome { get; set; }
+
         public List<DadosTreinoExercicioSerieDto> DadosTreinoExercicioSeries { get; set; }
     }
 }

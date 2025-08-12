@@ -18,13 +18,14 @@ namespace GymSquadBackEnd.Application.Services
         private readonly IDadosTreinoExerciciosRepository _repositoryExercicios;
 
         private readonly IDadosTreinoExercicioSeriesRepository _repositoryExerciciosSeries;
-        
 
-        public DadosTreinoService(IDadosTreinoRepository repository, IDadosTreinoExerciciosRepository repositoryExercicios, IDadosTreinoExercicioSeriesRepository repositoryExerciciosSeries)
+        private readonly IExerciciosRepository _exerciciosRepository;
+        public DadosTreinoService(IDadosTreinoRepository repository, IDadosTreinoExerciciosRepository repositoryExercicios, IDadosTreinoExercicioSeriesRepository repositoryExerciciosSeries, IExerciciosRepository exerciciosRepository)
         {
             _repository = repository;
             _repositoryExercicios = repositoryExercicios;
             _repositoryExerciciosSeries = repositoryExerciciosSeries;
+            _exerciciosRepository = exerciciosRepository;
         }
 
         public DadosTreinoDto Post(DadosTreinoForm form)
@@ -44,11 +45,13 @@ namespace GymSquadBackEnd.Application.Services
             {
                 List<DadosTreinoExercicioSerieDto> exerciciosSerieDto = new List<DadosTreinoExercicioSerieDto>();
 
-                var exercicioEntidade = new DadosTreinoExercicios();
-                exercicioEntidade.DadosTreinoId = dadoTreino.Id;
-                exercicioEntidade.ExercicioId = exercicio.ExercicioId;
+                var exercicioEntidad = _exerciciosRepository.GetById(exercicio.ExercicioId);
 
-                var dadosTreinoExercicio = _repositoryExercicios.Post(exercicioEntidade);
+                var dadosTreinoExercicioEntidade = new DadosTreinoExercicios();
+                dadosTreinoExercicioEntidade.DadosTreinoId = dadoTreino.Id;
+                dadosTreinoExercicioEntidade.ExercicioId = exercicio.ExercicioId;
+
+                var dadosTreinoExercicio = _repositoryExercicios.Post(dadosTreinoExercicioEntidade);
 
                 foreach (var serie in exercicio.DadosTreinoExercicioSeries)
                 {
@@ -72,6 +75,7 @@ namespace GymSquadBackEnd.Application.Services
                 exercicioDto.Id = dadosTreinoExercicio.Id;
                 exercicioDto.ExercicioId = dadosTreinoExercicio.ExercicioId;
                 exercicioDto.DadosTreinoExercicioSeries = exerciciosSerieDto;
+                exercicioDto.ExercicioNome = exercicioEntidad.Nome;
                 exerciciosDto.Add(exercicioDto);
 
             }

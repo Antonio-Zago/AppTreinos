@@ -67,6 +67,12 @@ class ApiClient{
         if(dioError.response!.statusCode == ApiCodesConstants.semAutorizacao){
           throw UnauthorizedException(message: "Não foi possível fazer login com essas credenciais");
         }
+        else if(dioError.response!.statusCode == ApiCodesConstants.requisicaoInvalida){
+          throw DioException(message: "Não foi possível fazer login com essas credenciais", 
+          requestOptions: dioError.response!.requestOptions,
+          response: dioError.response!
+          );
+        }
       }else{
         throw Exception(dioError.message);
       }

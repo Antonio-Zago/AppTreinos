@@ -13,6 +13,8 @@ class TreinoIniciadoResponse{
   final int? id;
   final int usuarioId;
   final int treinoId;
+
+  @JsonKey(fromJson: _fromJsonIgnoreTimezone, toJson: _toJsonIso8601)
   final DateTime dataAtual;
   final List<ExercicioIniciadoResponse> exercicios;
 
@@ -20,4 +22,14 @@ class TreinoIniciadoResponse{
 
 
   Map<String, dynamic> toJson() => _$TreinoIniciadoResponseToJson(this);
+
+  static DateTime _fromJsonIgnoreTimezone(String date) {
+    // Parse a string como UTC e volta ao fuso original
+     final cleaned = date.replaceFirst(RegExp(r'([-+]\d{2}:\d{2})$'), '');
+    return DateTime.parse(cleaned);
+  }
+
+  static String _toJsonIso8601(DateTime date) {
+    return date.toIso8601String();
+  }
 }

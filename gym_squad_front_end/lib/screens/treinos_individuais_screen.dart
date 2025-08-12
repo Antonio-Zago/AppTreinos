@@ -115,7 +115,7 @@ class _TreinosIndividuaisScreenState extends State<TreinosIndividuaisScreen> {
                   physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: treinos!.treinos.length,
+                  itemCount: treinos == null ? 0 : treinos!.treinos.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: EdgeInsets.only(bottom: 10),

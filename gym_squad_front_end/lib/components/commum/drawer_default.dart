@@ -67,6 +67,27 @@ class _DrawerDefaultState extends State<DrawerDefault> {
                                     );
              },
           ),
+
+          ListTile(
+            title: Text(
+              "Histórico",
+              style: TextStyle(
+                color: Color(ColorConstants.brancoPadrao),
+                fontSize: 20
+              ),
+            ),
+            leading: Icon(
+              Icons.calendar_month,
+              color: Color(ColorConstants.brancoPadrao),
+            ),
+             trailing: Icon(Icons.arrow_forward),
+             onTap: (){
+               Navigator.pushNamed(
+                                      context,
+                                      '/calendario-treinos',
+                                    );
+             },
+          ),
           
         ],
       )

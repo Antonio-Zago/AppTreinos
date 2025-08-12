@@ -16,7 +16,8 @@ TreinoIniciadoResponse _$TreinoIniciadoResponseFromJson(
               ExercicioIniciadoResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['id'] as num?)?.toInt(),
-      DateTime.parse(json['dataAtual'] as String),
+      TreinoIniciadoResponse._fromJsonIgnoreTimezone(
+          json['dataAtual'] as String),
     );
 
 Map<String, dynamic> _$TreinoIniciadoResponseToJson(
@@ -25,6 +26,6 @@ Map<String, dynamic> _$TreinoIniciadoResponseToJson(
       'id': instance.id,
       'usuarioId': instance.usuarioId,
       'treinoId': instance.treinoId,
-      'dataAtual': instance.dataAtual.toIso8601String(),
+      'dataAtual': TreinoIniciadoResponse._toJsonIso8601(instance.dataAtual),
       'exercicios': instance.exercicios,
     };

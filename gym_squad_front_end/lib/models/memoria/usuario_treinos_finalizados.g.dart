@@ -10,8 +10,7 @@ UsuarioTreinosFinalizados _$UsuarioTreinosFinalizadosFromJson(
         Map<String, dynamic> json) =>
     UsuarioTreinosFinalizados(
       (json['treinos'] as List<dynamic>)
-          .map(
-              (e) => TreinoIniciadoResponse.fromJson(e as Map<String, dynamic>))
+          .map((e) => TreinoFinalizado.fromJson(e as Map<String, dynamic>))
           .toList(),
       (json['idUsuario'] as num).toInt(),
     );

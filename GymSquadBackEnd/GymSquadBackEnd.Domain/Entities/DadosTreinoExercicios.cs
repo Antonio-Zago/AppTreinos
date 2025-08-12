@@ -19,6 +19,6 @@ namespace GymSquadBackEnd.Domain.Entities
         [Column("Exercicio")]
         public int ExercicioId { get; set; }
 
-        public Exercicio Exercicios { get; set; }
+        public Exercicio Exercicio { get; set; }
     }
 }

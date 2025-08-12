@@ -5,7 +5,7 @@ import 'package:gym_squad_front_end/utils/api_routes.dart';
 class DioClient {
   DioClient() {
     addInterceptor(LogInterceptor());
-    addInterceptor(AuthInterceptor());
+    addInterceptor(AuthInterceptor(dio));
   }
 
   final Dio dio = Dio(
