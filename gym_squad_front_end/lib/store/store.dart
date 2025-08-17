@@ -22,5 +22,11 @@ class Store {
     prefs.setString(chave, jsonString);
   }
 
+  static Future<void> resetarValor(String chave) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.remove(chave);
+  }
+
 
 }

@@ -14,5 +14,7 @@ namespace GymSquadBackEnd.Application.Dtos
 
         public string Senha { get; set; }
 
+        public byte[]? Foto { get; set; }
+
     }
 }

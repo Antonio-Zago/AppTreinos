@@ -19,5 +19,7 @@ namespace GymSquadBackEnd.Domain.Entities
         public string? RefreshToken { get; set; }
 
         public DateTime? RefreshTokenExpiryTime { get; set; }
+
+        public byte[]? Foto { get; set; }
     }
 }

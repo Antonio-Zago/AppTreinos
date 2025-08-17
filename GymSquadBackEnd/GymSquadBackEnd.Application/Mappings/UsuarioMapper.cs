@@ -20,7 +20,8 @@ namespace GymSquadBackEnd.Application.Mappings
                 Email = entidade.Email,
                 Senha = entidade.Senha,
                 RefreshToken = entidade.RefreshToken,
-                RefreshTokenExpiryTime = entidade.RefreshTokenExpiryTime
+                RefreshTokenExpiryTime = entidade.RefreshTokenExpiryTime,
+                Foto = entidade.Foto,
             };
         }
 
@@ -30,7 +31,8 @@ namespace GymSquadBackEnd.Application.Mappings
             {
                 Email = form.Email,
                 Senha = form.Senha.GerarHash(),
-                NomeUsuario = form.Nome
+                NomeUsuario = form.Nome,
+                Foto = form.Foto
             };
         }
     }

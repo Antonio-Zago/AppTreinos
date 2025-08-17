@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_squad_front_end/business/treinos_inidividuais_business.dart';
 import 'package:gym_squad_front_end/components/commum/app_bar_default.dart';
@@ -173,16 +174,26 @@ class _TreinoIndividualIniciadoScreenState
                   : null,
                   actions: [
                     TextButton(
-                      onPressed: _desabilitado ? null :(){
+                      onPressed: _desabilitado ? null :() async{
                         setState(() {
                           carregando = false;
                         });
                         setStateDialog(() => _desabilitado = true);
-                        Navigator.pushNamedAndRemoveUntil(
+                        final temInternet = await Connectivity().checkConnectivity(); 
+                        if(temInternet[0] != ConnectivityResult.none){
+                          Navigator.pushNamedAndRemoveUntil(
                                                   context,
                                                           '/treino-individual-iniciado-publicacao',
                                                           ModalRoute.withName('/treinos-individuais'),
                                                         );
+                        }
+                        else{
+                          Navigator.pushReplacementNamed(
+                                          context,
+                                          '/treinos-individuais'
+                                        );
+                        }
+                        
                       }, 
                       child:  Text('Não'),
                     ),
@@ -190,11 +201,20 @@ class _TreinoIndividualIniciadoScreenState
                       onPressed: _desabilitado ? null : () async{
                         setStateDialog(() => _desabilitado = true);
                         await treinosInidividuaisBusiness.postTreino(listaExerciciosRequest, nomeTreino, treinoId, false);
-                        Navigator.pushNamedAndRemoveUntil(
+                        final temInternet = await Connectivity().checkConnectivity(); 
+                        if(temInternet[0] != ConnectivityResult.none){
+                          Navigator.pushNamedAndRemoveUntil(
                                                   context,
                                                           '/treino-individual-iniciado-publicacao',
                                                           ModalRoute.withName('/treinos-individuais'),
                                                         );
+                        }
+                        else{
+                          Navigator.pushReplacementNamed(
+                                          context,
+                                          '/treinos-individuais'
+                                        );
+                        }
                       }, 
                       child: Text('Sim'),
                     )
@@ -210,21 +230,39 @@ class _TreinoIndividualIniciadoScreenState
       }
       else{
         if (context.mounted) {
-          Navigator.pushNamedAndRemoveUntil(
-                                                context,
-                                                        '/treino-individual-iniciado-publicacao',
-                                                        ModalRoute.withName('/treinos-individuais'),
-                                                      );
+          final temInternet = await Connectivity().checkConnectivity(); 
+                        if(temInternet[0] != ConnectivityResult.none){
+                          Navigator.pushNamedAndRemoveUntil(
+                                                  context,
+                                                          '/treino-individual-iniciado-publicacao',
+                                                          ModalRoute.withName('/treinos-individuais'),
+                                                        );
+                        }
+                        else{
+                          Navigator.pushReplacementNamed(
+                                          context,
+                                          '/treinos-individuais'
+                                        );
+                        }
         };
       }
     }
     else{
         if (context.mounted) {
-          Navigator.pushNamedAndRemoveUntil(
-                                                context,
-                                                        '/treino-individual-iniciado-publicacao',
-                                                        ModalRoute.withName('/treinos-individuais'),
-                                                      );
+          final temInternet = await Connectivity().checkConnectivity(); 
+                        if(temInternet[0] != ConnectivityResult.none){
+                          Navigator.pushNamedAndRemoveUntil(
+                                                  context,
+                                                          '/treino-individual-iniciado-publicacao',
+                                                          ModalRoute.withName('/treinos-individuais'),
+                                                        );
+                        }
+                        else{
+                          Navigator.pushReplacementNamed(
+                                          context,
+                                          '/treinos-individuais'
+                                        );
+                        }
         };
     }
     

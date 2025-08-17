@@ -4,11 +4,12 @@ part 'register_request.g.dart';
 
 @JsonSerializable()
 class RegisterRequest{
-  RegisterRequest(this.email, this.senha, this.nome);
+  RegisterRequest(this.email, this.senha, this.nome, this.foto);
 
   final String email;
   final String senha;
   final String nome;
+  final String foto;
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) => _$RegisterRequestFromJson(json);
 

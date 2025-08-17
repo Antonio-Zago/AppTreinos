@@ -5,6 +5,7 @@ import 'package:gym_squad_front_end/components/commum/button_default.dart';
 import 'package:gym_squad_front_end/components/commum/circular_progress_indicator_default.dart';
 import 'package:gym_squad_front_end/components/commum/text_field_default.dart';
 import 'package:gym_squad_front_end/exceptions/unauthorized_exception.dart';
+import 'package:gym_squad_front_end/store/store.dart';
 import 'package:gym_squad_front_end/utils/color_constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,6 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool fazendoLogin = false;
   LoginBusiness loginBusiness = LoginBusiness();
   final _formKey = GlobalKey<FormState>();
+
+  _resetarCredenciais() async{
+    await Store.resetarValor("Credenciais");
+  }
 
   Future<void> login() async{
     setState(() {

@@ -40,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+
   @override
   void initState() {
     
@@ -59,9 +60,6 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.pushReplacementNamed(context,
                                        '/login');
         }
-
-        
-
       }
       catch (e){
         

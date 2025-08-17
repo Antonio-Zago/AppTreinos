@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:gym_squad_front_end/clients/api_client.dart';
 import 'package:gym_squad_front_end/models/api/login_request.dart';
@@ -38,9 +40,9 @@ class LoginBusiness {
 
   }
 
-  Future<void> cadastrar(String email, String senha, String nome) async{
+  Future<void> cadastrar(String email, String senha, String nome, String base64String) async{
 
-    RegisterRequest registerRequest = RegisterRequest(email, senha,nome);
+    RegisterRequest registerRequest = RegisterRequest(email, senha,nome, base64String);
 
     await apiClient.cadastrar(registerRequest);      
 
